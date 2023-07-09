@@ -1,0 +1,217 @@
+.search-bg {
+    background-color: #00262B;
+}
+
+.search-area {
+    padding: 2rem 1rem;
+    .title {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+    .pgn__searchfield_wrapper {
+        max-width: 430px;
+        border: 0!important;
+        box-shadow: none;
+        input {
+            border: 0!important;
+            outline: none!important;
+        }
+        button[type="reset"] {
+            color: var(--norm-text);
+            border: 0;
+            border-radius: 0;
+            background-color: white;
+        }
+        &::after {
+            border: 0!important;
+            outline: none!important;
+        }
+    }
+    .pgn__searchfield.pgn__searchfield--external .btn-primary {
+        background: #d23228;
+        white-space: nowrap;
+        border: 0!important;
+        &::before, &::after  {
+            border: 0!important;
+        }
+        &:focus {
+            border: 0!important;
+        }
+    }
+
+    .view-all-search-result {
+        background-color: #f2f0ef!important;
+        a {
+            text-decoration: underline;
+            cursor: pointer;
+            &:hover {
+                color: var(--prim)!important;
+                background-color: #f2f0ef!important;
+                text-decoration: underline!important;
+            }
+        }
+    }
+
+    .search-dropdown {
+        height: 500px;
+        width: 100%;
+        max-width: 430px;
+        height: auto;
+        max-height: 80vh;
+        overflow-y: auto;
+        width: calc(100% - 30px);
+        max-width: 430px;
+        background-color: white;
+        position: absolute;
+        z-index: 1;
+        margin-top: -1px;
+        ul {
+            margin: 0;
+            padding: 0;
+            li {
+                list-style: none;
+                a {
+                    color: var(--norm-text);
+                    padding: 0.5rem 1rem;
+                    display: block;
+                    &:hover {
+                        text-decoration: none;
+                        background-color: var(--prim);
+                        color: white;
+                    }
+                    .badge-light {
+                        color: var(--norm-text);
+                        padding: .25rem .5rem;
+                        font-size: 0.875rem;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.filter-area-wrapper {
+    background-color: #F2F0EF;
+}
+
+.filter-area {
+    padding: 1rem;
+    .pgn_collapsible.collapsible-card {
+        width: 280px;
+        &.availability {
+            width: 185px;
+        }
+    }
+    .collapsible-body {
+        padding: 0;
+        padding-left: 0;
+        .pgn__menu {
+            border-radius: 0;
+        }
+        .pgn__menu .pgn__menu-item {
+            max-width: 100%;
+        }
+    }
+
+    .selected-filters {
+        margin-top: 1rem;
+        .pgn__chip.pgn__chip-dark {
+            background: #e1dddb;
+        }
+        .pgn__chip.pgn__chip-dark * {
+            color: var(--norm-text);
+        }
+        .clear {
+            font-size: 0.875rem;
+            padding: 5px 16px;
+        }
+    }
+}
+
+.search-result-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .page-nav {
+        font-size: 0.875rem;
+        a {
+            color: var(--prim);
+        }
+    }
+    .pgn__icon {
+        height: 1.2rem;
+    }
+    .pgn__breadcrumb {
+        margin-top: -1px;
+    }
+    .search-paging {
+        margin-top: 20px;
+        .pagination {
+            justify-content: center;
+        }
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1re;
+    }
+
+    .card-list {
+        margin-top: 20px;
+        max-width: 1500px;
+        flex-wrap: wrap;
+        >.pgn__card {
+            width: 350px;
+            margin: 0 20px 20px 0;
+        }
+        [class*="pgn__card-header-title-"] {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .space {
+            height: 80px;
+        }
+        .org-and-number {
+            font-size: 0.875rem;
+            padding: 1rem 1.25rem 0 1.25rem;
+            font-weight: 400;
+            display: flex;
+            >div {
+                &:not(:last-child){
+                    margin-right: 1rem;
+                }
+            }
+        }
+        .pgn__card-header-content {
+            margin-top: 0;
+        }
+        .pgn__card .pgn__card-footer.vertical {
+            display: block;
+            position: absolute;
+            bottom: 0;
+        }
+        .badge-light {
+            color: var(--norm-text);
+            padding: .25rem .5rem;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+    }
+}
+
+.search-paging {
+    .page-item > .btn {
+        border-radius: 0;
+    }
+
+    .page-item.active .page-link {
+        background-color: var(--prim);
+    }
+}
+

@@ -9,18 +9,29 @@ import ReactDOM from 'react-dom';
 
 import Header from '@edx/frontend-component-header';
 import Footer from '@edx/frontend-component-footer';
+import {
+  BrowserRouter, Route, Switch,
+} from 'react-router-dom';
 import messages from './i18n';
-import ExamplePage from './example/ExamplePage';
 
 import './index.scss';
+import Search from './pages/search/search';
+import NotFoundPage from './pages/not-found/notFound';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
-    <AppProvider>
-      <Header />
-      <ExamplePage />
-      <Footer />
-    </AppProvider>,
+    <BrowserRouter>
+      <AppProvider>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Search} />
+          <Route exact path="/search" component={Search} />
+          <Route path="*" component={NotFoundPage} />
+        </Switch>
+        <Footer />
+      </AppProvider>
+    </BrowserRouter>,
+
     document.getElementById('root'),
   );
 });

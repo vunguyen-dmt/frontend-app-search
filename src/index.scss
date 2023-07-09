@@ -7,3 +7,14 @@
 
 @import "~@edx/frontend-component-header/dist/index";
 @import "~@edx/frontend-component-footer/dist/footer";
+
+
+:root {
+    --norm-text: rgba(0,0,0,0.87);
+    --prim: #00262B;
+}
+
+body {
+    color: rgba(0,0,0,0.87);
+    font-family:'Open Sans', 'Helvetica Neue', 'Roboto','Arial', sans-serif;
+}
