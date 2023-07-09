@@ -29,7 +29,7 @@ const CourseAbout = ({ intl }) => {
     getCourseDetail(courseId, user?.username).then(response => {
       setCourseDetailResponse(response);
       setCourseImageUrl(response.data.media.image.small);
-      document.title = `${response.data.name} | ${process.env.SITE_NAME}`;
+      document.title = `${response.data.name} | ${getConfig().SITE_NAME}`;
     //   if (window.innerWidth <= 600) {
     //     setCourseImageUrl(response.data.media.image.small);
     //   } else {

@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 
 import {
   APP_INIT_ERROR, APP_READY, subscribe, initialize,
+  getConfig,
 } from '@edx/frontend-platform';
 import { AppProvider, ErrorPage } from '@edx/frontend-platform/react';
 import ReactDOM from 'react-dom';
@@ -12,6 +13,7 @@ import Footer from '@edx/frontend-component-footer';
 import {
   BrowserRouter, Route, Switch,
 } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import messages from './i18n';
 
 import './index.scss';
@@ -23,6 +25,9 @@ subscribe(APP_READY, () => {
   ReactDOM.render(
     <BrowserRouter>
       <AppProvider>
+        <Helmet>
+          <link rel="shortcut icon" href={getConfig().FAVICON_URL} type="image/x-icon" />
+        </Helmet>
         <Header />
         <Switch>
           <Route exact path="/" component={Search} />
