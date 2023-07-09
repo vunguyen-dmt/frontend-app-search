@@ -26,8 +26,7 @@ subscribe(APP_READY, () => {
         <Header />
         <Switch>
           <Route exact path="/" component={Search} />
-          <Route exact path="/courses" component={Search} />
-          <Route exact path="/courses/:id" component={CourseAbout} />
+          <Route exact path="/:id" component={CourseAbout} />
           <Route path="*" component={NotFoundPage} />
         </Switch>
         <Footer />
