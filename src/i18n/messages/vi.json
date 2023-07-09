@@ -12,5 +12,12 @@
     "No courses were found to match your search query": "Không tìm thấy khóa học nào",
     "Back to search": "Trở lại tìm kiếm",
     "notfound.message": "Không tìm thấy trang. Vui lòng kiểm tra địa chỉ và thử lại.",
-    "View all results": "Xem tất cả kết quả"
+    "View all results": "Xem tất cả kết quả",
+    "View course": "Xem khóa học",
+    "Enroll now": "Đăng ký ngay",
+    "Enrollment in this course is by invitation only": "Đăng ký chỉ dành cho người được mời",
+    "The page you're looking for is unavailable or there's an error in the URL. Please check the URL and try again": "Không tìm thấy trang, có lỗi xảy ra hoặc địa chỉ không đúng. Vui lòng kiểm tra lại địa chỉ và thử lại.",
+    "Course number": "Mã khóa học",
+    "Instructor-Paced": "Có giảng viên hướng dẫn",
+    "Self-Paced": "Tự học"
 }

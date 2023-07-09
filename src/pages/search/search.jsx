@@ -24,7 +24,7 @@ const Search = ({ intl }) => {
   };
 
   const [searchQuery, setSearchQuery] = React.useState(parseQuery());
-  const [dropdownCourses, setDropdownCourses] = React.useState([]);
+  const [dropdownResponse, setDropdownResponse] = React.useState(null);
   const [searchResponse, setSearchResponse] = React.useState(null);
   const [numberOfPage, setNumberOfPage] = React.useState(1);
   const numberOfItemPerPage = 24;
@@ -67,10 +67,10 @@ const Search = ({ intl }) => {
       searchDropdownTimerId = setTimeout(() => {
         searchCourse({
           page: 1,
-          limit: 11,
+          limit: 5,
           query: searchQuery,
         }).then(response => {
-          setDropdownCourses(response.data.results);
+          setDropdownResponse(response);
         });
       }, delay);
     }
@@ -110,8 +110,13 @@ const Search = ({ intl }) => {
 
   const searchSubmittedHandle = () => {
     clearTimeout(searchDropdownTimerId);
-    setDropdownCourses([]);
-    setQuery({ ...query, query: searchQuery });
+    setDropdownResponse(null);
+    setQuery({ ...query, page: 1, query: searchQuery });
+  };
+
+  const searchClearHandle = () => {
+    clearTimeout(searchDropdownTimerId);
+    setDropdownResponse(null);
   };
 
   return (
@@ -126,18 +131,19 @@ const Search = ({ intl }) => {
             value={searchQuery}
             onSubmit={searchSubmittedHandle}
             onChange={searchBoxOnChangeHandle}
+            onClear={searchClearHandle}
           />
           {
-            dropdownCourses.length > 0
+            dropdownResponse && dropdownResponse.data.results.length > 0
             && (
             <div className="search-dropdown shadow-lg">
               <ul>
                 {
-                dropdownCourses.map((item) => (
-                  <li key={item.id}><a href={`${getConfig().LMS_BASE_URL}/courses/${item.data.id}/about`}>{item.data.content.display_name} <Badge variant="light">{item.data.org}</Badge> <Badge variant="light">{item.data.number}</Badge></a></li>
+                dropdownResponse.data.results.map((item) => (
+                  <li key={item.data.id}><a href={`/courses/${item.data.id}/about`}>{item.data.content.display_name} <Badge variant="light">{item.data.number}</Badge></a></li>
                 ))
               }
-                {dropdownCourses.length > 10 && <li className="view-all-search-result"><a onClick={searchSubmittedHandle}>{intl.formatMessage(messages['View all results'])}</a></li>}
+                {dropdownResponse.data.total > 5 && <li className="view-all-search-result"><a onClick={searchSubmittedHandle}>{intl.formatMessage(messages['View all results'])}</a></li>}
               </ul>
             </div>
             )
@@ -193,7 +199,7 @@ const Search = ({ intl }) => {
                       <Card
                         key={item.data.id}
                         as={Hyperlink}
-                        destination={`${getConfig().LMS_BASE_URL}/courses/${item.data.id}/about`}
+                        destination={`/courses/${item.data.id}`}
                         isClickable
                       >
 
@@ -205,7 +211,6 @@ const Search = ({ intl }) => {
                           <div>
                             <Badge variant="light">{intl.formatMessage(messages.Course)}</Badge>
                           </div>
-                          <div>{item.data.org}</div>
                           <div>{item.data.number}</div>
                         </div>
                         <Card.Header
@@ -225,7 +230,7 @@ const Search = ({ intl }) => {
                   searchResponse && searchResponse.data.results.length === 0 && (
                   <div className="text-center">
                     <p>{intl.formatMessage(messages['No courses were found to match your search query'])}.</p>
-                    <p><a href="/search">{intl.formatMessage(messages['Back to search'])}</a>.</p>
+                    <p><a href="/courses">{intl.formatMessage(messages['Back to search'])}</a>.</p>
                   </div>
                   )
               }
@@ -235,6 +240,7 @@ const Search = ({ intl }) => {
               && (
               <div className="search-paging">
                 <Pagination
+                  variant="secondary"
                   paginationLabel="pagination navigation"
                   pageCount={numberOfPage}
                   currentPage={query.page}

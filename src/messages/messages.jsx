@@ -66,6 +66,41 @@ const messages = defineMessages({
     defaultMessage: 'View all results',
     description: '',
   },
+  'View course': {
+    id: 'View course',
+    defaultMessage: 'View course',
+    description: '',
+  },
+  'Enroll now': {
+    id: 'Enroll now',
+    defaultMessage: 'Enroll now',
+    description: '',
+  },
+  'Enrollment in this course is by invitation only': {
+    id: 'Enrollment in this course is by invitation only',
+    defaultMessage: 'Enrollment in this course is by invitation only',
+    description: '',
+  },
+  'The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again': {
+    id: 'The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again',
+    defaultMessage: 'The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again',
+    description: '',
+  },
+  'Course number': {
+    id: 'Course number',
+    defaultMessage: 'Course number',
+    description: '',
+  },
+  'Instructor-Paced': {
+    id: 'Instructor-Paced',
+    defaultMessage: 'Instructor-Paced',
+    description: '',
+  },
+  'Self-Paced': {
+    id: 'Self-Paced',
+    defaultMessage: 'Self-Paced',
+    description: '',
+  },
 });
 
 export default messages;

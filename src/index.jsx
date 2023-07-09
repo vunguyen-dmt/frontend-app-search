@@ -17,6 +17,7 @@ import messages from './i18n';
 import './index.scss';
 import Search from './pages/search/search';
 import NotFoundPage from './pages/not-found/notFound';
+import CourseAbout from './pages/course-about/courseAbout';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
@@ -25,7 +26,8 @@ subscribe(APP_READY, () => {
         <Header />
         <Switch>
           <Route exact path="/" component={Search} />
-          <Route exact path="/search" component={Search} />
+          <Route exact path="/courses" component={Search} />
+          <Route exact path="/courses/:id" component={CourseAbout} />
           <Route path="*" component={NotFoundPage} />
         </Switch>
         <Footer />

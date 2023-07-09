@@ -8,3 +8,11 @@ export const searchCourse = (query) => {
   body.append('page_index', query.page - 1);
   return getAuthenticatedHttpClient().post(`${getConfig().LMS_BASE_URL}/search/course_discovery/`, body);
 };
+
+export const getCourseDetail = (courseId, username) => {
+  let url = `${getConfig().LMS_BASE_URL}/api/courses/v1/courses/${courseId}`;
+  if (username) {
+    url += `?username=${username}`;
+  }
+  return getAuthenticatedHttpClient().get(url);
+};
