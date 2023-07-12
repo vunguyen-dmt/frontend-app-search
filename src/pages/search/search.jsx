@@ -11,6 +11,7 @@ import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { searchCourse } from '../../services/courseService';
 import './search.scss';
 import messages from '../../messages/messages';
+import { updateQueryStringParameter } from '../../data/util';
 
 const Search = ({ intl }) => {
   const parsePage = () => {
@@ -52,8 +53,6 @@ const Search = ({ intl }) => {
       setSearchResponse(response);
       setNumberOfPage(Math.ceil(response.data.total / numberOfItemPerPage));
     });
-
-    history.push(`/?page=${query.page}&q=${encodeURIComponent(query.query)}`);
   }, [query, history]);
 
   React.useEffect(() => {
@@ -77,17 +76,6 @@ const Search = ({ intl }) => {
     return () => {
       clearTimeout(searchDropdownTimerId);
     };
-
-    // if (searchQuery && renderCount.current > 1 && !hitSearch) {
-    //   searchCourse({
-    //     page: 1,
-    //     limit: 11,
-    //     query: searchQuery,
-    //   }).then(response => {
-    //     setDropdownCourses(response.data.results);
-    //   });
-    // }
-    // renderCount.current++;
   }, [searchQuery]);
 
   window.onpopstate = () => {
@@ -99,6 +87,7 @@ const Search = ({ intl }) => {
   };
 
   const pagingClickedHandle = (page) => {
+    history.push(updateQueryStringParameter(`/${window.location.search}`, 'page', page));
     setQuery({ ...query, page });
   };
 
@@ -109,6 +98,7 @@ const Search = ({ intl }) => {
   };
 
   const searchSubmittedHandle = () => {
+    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', searchQuery));
     clearTimeout(searchDropdownTimerId);
     setDropdownResponse(null);
     setQuery({ ...query, page: 1, query: searchQuery });
@@ -117,6 +107,18 @@ const Search = ({ intl }) => {
   const searchClearHandle = () => {
     clearTimeout(searchDropdownTimerId);
     setDropdownResponse(null);
+  };
+
+  const goToHomeHandle = () => getConfig().LMS_BASE_URL;
+
+  const courseAboutPageUrl = (courseId) => `${getConfig().PUBLIC_PATH}${courseId}`;
+
+  const goToCourseAboutPage = (courseId) => {
+    window.location.href = courseAboutPageUrl(courseId);
+  };
+
+  const backToCoursesHandle = () => {
+    window.location.href = getConfig().PUBLIC_PATH;
   };
 
   return (
@@ -140,7 +142,7 @@ const Search = ({ intl }) => {
               <ul>
                 {
                 dropdownResponse.data.results.map((item) => (
-                  <li key={item.data.id}><a href={`/courses/${item.data.id}/about`}>{item.data.content.display_name} <Badge variant="light">{item.data.number}</Badge></a></li>
+                  <li key={item.data.id}><a onClick={() => goToCourseAboutPage(item.data.id)}>{item.data.content.display_name} <Badge variant="light">{item.data.number}</Badge></a></li>
                 ))
               }
                 {dropdownResponse.data.total > 5 && <li className="view-all-search-result"><a onClick={searchSubmittedHandle}>{intl.formatMessage(messages['View all results'])}</a></li>}
@@ -175,7 +177,7 @@ const Search = ({ intl }) => {
       <div className="search-result-wrapper">
         <div className="search-result container">
           <div className="page-nav d-flex">
-            <Hyperlink destination={process.env.LMS_BASE_URL} className="mr-1">
+            <Hyperlink destination={goToHomeHandle()} className="mr-1">
               <Icon
                 src={Home}
                 className="fa fa-book"
@@ -199,10 +201,9 @@ const Search = ({ intl }) => {
                       <Card
                         key={item.data.id}
                         as={Hyperlink}
-                        destination={`/courses/${item.data.id}`}
+                        destination={courseAboutPageUrl(item.data.id)}
                         isClickable
                       >
-
                         <Card.ImageCap
                           src={`${getConfig().LMS_BASE_URL}${item.data.image_url}`}
                           srcAlt="course image"
@@ -230,7 +231,9 @@ const Search = ({ intl }) => {
                   searchResponse && searchResponse.data.results.length === 0 && (
                   <div className="text-center">
                     <p>{intl.formatMessage(messages['No courses were found to match your search query'])}.</p>
-                    <p><a href="/courses">{intl.formatMessage(messages['Back to search'])}</a>.</p>
+                    <div>
+                      <Button size="sm" onClick={backToCoursesHandle} variant="link" size="inline">{intl.formatMessage(messages['Back to search'])}</Button>
+                    </div>
                   </div>
                   )
               }

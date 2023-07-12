@@ -11,11 +11,15 @@ import {
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getCourseDetail } from '../../services/courseService';
-import { getEnrollmentInfo, getEnrollmentRole, enroll } from '../../services/enrollmentService';
+import {
+  getCourseEnrollmentInfo, getEnrollmentRole, enroll, getEnrollInfoForAUserInACourse,
+} from '../../services/enrollmentService';
 import messages from '../../messages/messages';
 
 const CourseAbout = ({ intl }) => {
   const [courseDetailResponse, setCourseDetailResponse] = React.useState(null);
+  const [courseEnrollmentInfo, setCourseEnrollmentInfo] = React.useState(null);
+  const [enrollErrorMsg, setEnrollErrorMsg] = React.useState('');
   const [canEnrollRegardless, setCanEnrollRegardless] = React.useState(false);
   const [notFound, setNotFound] = React.useState(false);
   const [courseImageUrl, setCourseImageUrl] = React.useState('');
@@ -23,7 +27,6 @@ const CourseAbout = ({ intl }) => {
   const defaultImageUrl = 'https://dmt-statics.s3.ap-southeast-1.amazonaws.com/open-edx/images/HUTECH/default-course-image.png';
   const params = useParams();
   const user = getAuthenticatedUser();
-
   React.useEffect(() => {
     const courseId = params.id;
     getCourseDetail(courseId, user?.username).then(response => {
@@ -39,20 +42,38 @@ const CourseAbout = ({ intl }) => {
       setNotFound(true);
     });
 
-    getEnrollmentInfo(params.id).then(response => {
-      if (response.data) {
-        setIsEnrolled(1);
-      } else {
-        setIsEnrolled(-1);
-      }
+    getCourseEnrollmentInfo(params.id).then(response => {
+      setCourseEnrollmentInfo(response.data);
+      // if (response.data) {
+      //   setIsEnrolled(1);
+      // } else {
+      //   setIsEnrolled(-1);
+      // }
     }).catch(error => {
-      setIsEnrolled(-1);
+      // setIsEnrolled(-1);
     });
+
+    if (user) {
+      getEnrollInfoForAUserInACourse(params.id, user.username).then(response => {
+        console.log(response.data);
+        if (response.data && response.data.is_active) {
+          setIsEnrolled(1);
+        } else {
+          setIsEnrolled(-1);
+        }
+      }).catch(error => {
+        setIsEnrolled(-1);
+      });
+    } else {
+      setIsEnrolled(-1);
+    }
 
     getEnrollmentRole(params.id).then(response => {
       if (response && response.data && ((response.data.roles.length === 1 && (response.data.roles[0].role === 'staff' || response.data.roles[0].role === 'admin' || response.data.roles[0].role === 'instructor')) || response.data.is_staff === true)) {
         setCanEnrollRegardless(true);
       }
+    }).catch(error => {
+
     });
   }, [params.id]);
 
@@ -60,16 +81,30 @@ const CourseAbout = ({ intl }) => {
     setCourseImageUrl(defaultImageUrl);
   };
 
+  const viewCourseClickedHandle = () => {
+    window.location.href = `${getConfig().LEARNING_BASE_URL}/course/${params.id}/home`;
+  };
+
   const enrollButtonClickedHandle = () => {
     if (!user) {
-      window.location.href = '/authn/login';
+      window.location.href = getConfig().LOGIN_URL;
     } else {
-      enroll(params.id).then(response => {
+      enroll(params.id, courseEnrollmentInfo.course_modes[0].slug).then(response => {
+        viewCourseClickedHandle();
       }).catch(error => {
-        console.log(error);
+        let msg = 'Something went wrong. Please try again later!';
+        try {
+          const responseErrorMsg = JSON.parse(error.customAttributes.httpErrorResponseData).message;
+          if (responseErrorMsg) {
+            msg = responseErrorMsg;
+          }
+        } catch {}
+        setEnrollErrorMsg(msg);
       });
     }
   };
+
+  const backToCoursesHandle = () => getConfig().PUBLIC_PATH;
 
   return (
     <div>
@@ -80,7 +115,7 @@ const CourseAbout = ({ intl }) => {
             <div className="head-area container">
               <div>
                 <div className="page-nav">
-                  <Hyperlink destination="/courses" className="mr-1">
+                  <Hyperlink destination={backToCoursesHandle()} className="mr-1">
                     <Icon
                       size="xs"
                       src={ArrowBackIos}
@@ -91,10 +126,13 @@ const CourseAbout = ({ intl }) => {
                 <div><div className="course-name">{courseDetailResponse.data.name}</div></div>
                 <div className="short-description">{courseDetailResponse.data.short_description}</div>
                 <div className="enroll-btn-wrapper">
-                  {isEnrolled === 1 && <a href="/learning/course/course-v1:MIS+COS116+2021_T2B/home"><Button variant="danger" className="text-nowrap">{intl.formatMessage(messages['View course'])}</Button></a>}
-                  {isEnrolled === -1 && (!courseDetailResponse.data.invitation_only || canEnrollRegardless) && <Button variant="danger" className="text-nowrap" onClick={enrollButtonClickedHandle}>{intl.formatMessage(messages['Enroll now'])}</Button>}
+                  {isEnrolled === 1 && <Button onClick={viewCourseClickedHandle} variant="danger" className="text-nowrap">{intl.formatMessage(messages['View course'])}</Button>}
+                  {isEnrolled === -1 && courseEnrollmentInfo != null && (!courseDetailResponse.data.invitation_only || canEnrollRegardless) && <Button variant="danger" className="text-nowrap" onClick={enrollButtonClickedHandle}>{intl.formatMessage(messages['Enroll now'])}</Button>}
                   {isEnrolled === -1 && courseDetailResponse.data.invitation_only && !canEnrollRegardless && <Button disabled variant="danger">{intl.formatMessage(messages['Enrollment in this course is by invitation only'])}</Button>}
                 </div>
+                {
+                  enrollErrorMsg && enrollErrorMsg.length > 0 && <div className="alert alert-danger" role="alert">{enrollErrorMsg}</div>
+                }
               </div>
               <div className="media">
                 <img className="course-image" alt="banner" src={courseImageUrl} onError={imageErrorHandle} />
@@ -102,6 +140,8 @@ const CourseAbout = ({ intl }) => {
             </div>
           </div>
           <div className="info-area-wrapper">
+            <div className="skew-1 skew" />
+            <div className="skew-2 skew" />
             <div className="info-area container">
               <div>
                 <div><Icon src={InfoOutline} className="fa fa-book" /></div>

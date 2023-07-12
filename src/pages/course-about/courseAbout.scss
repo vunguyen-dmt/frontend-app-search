@@ -1,5 +1,9 @@
+.head-area-wrapper {
+    background-color: #fbfaf9;
+}
+
 .head-area  {
-    padding: 15px 0;
+    padding: 15px 0 30px 0;
     .course-name {
         font-size: 2.25rem;
         font-weight: 700;
@@ -45,12 +49,40 @@
 }
 
 .info-area-wrapper {
-    background-color: #F2F0EF;
+    top: -30px;
+    position: relative;
+    .skew {
+        transform: skew(-12deg);
+        position: absolute;
+        @media screen and (max-width: 600px) {
+            max-width: 100%!important;
+            transform: skew(0)!important;
+        }
+    }
+    .skew-1 {
+        background-color: #F2F0EF;
+        height: 100%;
+        z-index: 1;
+        max-width: 80%;
+        width: 1140px;
+    }
+
+    .skew-2 {
+        background-color: #040707;
+        height: 50%;
+        z-index: 0;
+        max-width: calc(80% + 8px);
+        bottom: 0;
+        width: 1148px;
+    }
+
     .info-area {
         display: flex;
         align-items: center;
         padding: 1rem 0 0 0;
         flex-wrap: wrap;
+        z-index: 2;
+        position: relative;
         >div {
             margin-right: 30px;
             margin-bottom: 1rem;
@@ -68,6 +100,9 @@
                     font-weight: 600;
                     font-size: 1.2rem;
                 }
+            }
+            &:last-child {
+                padding-right: 30px;
             }
         }
     }
