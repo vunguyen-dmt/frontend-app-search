@@ -6,7 +6,7 @@ import {
   Hyperlink, Icon, Button,
 } from '@edx/paragon';
 import {
-  ArrowBackIos, Event, InfoOutline, Person,
+  ArrowBackIos, Event, InfoOutline, Person, ArrowForward, PlayCircle,
 } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -16,8 +16,12 @@ import {
 } from '../../services/enrollmentService';
 import messages from '../../messages/messages';
 import hutechLogo from '../../assets/images/hutech-logo.png';
+import { getCookie } from '../../data/util';
+import defaultCourseImage from '../../assets/images/default-course-image.jpg';
 
 const CourseAbout = ({ intl }) => {
+  const [courseHiddenInfo, setCourseHiddenInfo] = React.useState({});
+  const [showVideo, setShowVideo] = React.useState(false);
   const [courseDetailResponse, setCourseDetailResponse] = React.useState(null);
   const [courseEnrollmentInfo, setCourseEnrollmentInfo] = React.useState(null);
   const [enrollErrorMsg, setEnrollErrorMsg] = React.useState('');
@@ -25,33 +29,53 @@ const CourseAbout = ({ intl }) => {
   const [notFound, setNotFound] = React.useState(false);
   const [courseImageUrl, setCourseImageUrl] = React.useState('');
   const [isEnrolled, setIsEnrolled] = React.useState(0); // 0 getting data, 1 enrolled, -1 unenrolled.
-  const defaultImageUrl = 'https://dmt-statics.s3.ap-southeast-1.amazonaws.com/open-edx/images/HUTECH/default-course-image.png';
   const params = useParams();
   const user = getAuthenticatedUser();
+
+  const languageCode = () => getCookie(getConfig().LANGUAGE_PREFERENCE_COOKIE_NAME) || 'en';
+  const toLocalDate = (d) => {
+    if (!d) {
+      return '';
+    }
+    const item = new Date(d);
+    return item.toLocaleDateString(languageCode());
+  };
+
+  const extractCourseRun = () => {
+    try {
+      return params.id.split('+')[1];
+    } catch {}
+    return '';
+  };
+
+  const getHiddenInfo = (html) => {
+    try {
+      const el = document.createElement('html');
+      el.innerHTML = html;
+      const blocks = el.getElementsByClassName('course-about-hidden-info');
+      if (blocks && blocks.length > 0) {
+        const json = JSON.parse(blocks[0].innerHTML);
+        setCourseHiddenInfo(json);
+        return;
+      }
+    } catch (error) {}
+    setCourseHiddenInfo({});
+  };
+
   React.useEffect(() => {
     const courseId = params.id;
     getCourseDetail(courseId, user?.username).then(response => {
       setCourseDetailResponse(response);
       setCourseImageUrl(response.data.media.image.small);
-      document.title = `${response.data.name} | ${getConfig().SITE_NAME}`;
-    //   if (window.innerWidth <= 600) {
-    //     setCourseImageUrl(response.data.media.image.small);
-    //   } else {
-    //     setCourseImageUrl(response.data.media.image.large);
-    //   }
+      document.title = `${response.data.name} | ${intl.formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;
+      getHiddenInfo(response.data.overview);
     }).catch(error => {
       setNotFound(true);
     });
 
     getCourseEnrollmentInfo(params.id).then(response => {
       setCourseEnrollmentInfo(response.data);
-      // if (response.data) {
-      //   setIsEnrolled(1);
-      // } else {
-      //   setIsEnrolled(-1);
-      // }
     }).catch(error => {
-      // setIsEnrolled(-1);
     });
 
     if (user) {
@@ -78,11 +102,15 @@ const CourseAbout = ({ intl }) => {
   }, [params.id]);
 
   const imageErrorHandle = () => {
-    setCourseImageUrl(defaultImageUrl);
+    setCourseImageUrl(defaultCourseImage);
   };
 
   const viewCourseClickedHandle = () => {
     window.location.href = `${getConfig().LEARNING_BASE_URL}/course/${params.id}/home`;
+  };
+
+  const viewCourseInStudioClickedHandle = () => {
+    window.location.href = `${getConfig().STUDIO_BASE_URL}/settings/details/${params.id}`;
   };
 
   const enrollButtonClickedHandle = () => {
@@ -112,20 +140,23 @@ const CourseAbout = ({ intl }) => {
         && (
         <div>
           <div className="head-area-wrapper">
+            <div className="container container-mw-lg">
+              <div className="page-nav">
+                <Hyperlink destination={backToCoursesHandle()} className="mr-1">
+                  <Icon
+                    size="xs"
+                    src={ArrowBackIos}
+                    className="fa fa-book"
+                  /><span className="nav-text">{intl.formatMessage(messages.Courses)}</span>
+                </Hyperlink>
+              </div>
+              <div>
+                <img alt="org logo" className="org-logo" src={hutechLogo} />
+              </div>
+            </div>
             <div className="head-area container container-mw-lg">
               <div>
-                <div className="page-nav">
-                  <Hyperlink destination={backToCoursesHandle()} className="mr-1">
-                    <Icon
-                      size="xs"
-                      src={ArrowBackIos}
-                      className="fa fa-book"
-                    /><span className="nav-text">{intl.formatMessage(messages.Courses)}</span>
-                  </Hyperlink>
-                </div>
-                <div>
-                  <img alt="org logo" className="org-logo" src={hutechLogo} />
-                </div>
+
                 <div><div className="course-name">{courseDetailResponse.data.name}</div></div>
                 <div className="short-description">{courseDetailResponse.data.short_description}</div>
                 <div className="enroll-btn-wrapper">
@@ -138,7 +169,27 @@ const CourseAbout = ({ intl }) => {
                 }
               </div>
               <div className="media">
-                <img className="course-image" alt="banner" src={courseImageUrl} onError={imageErrorHandle} />
+                {
+                  !showVideo
+                  && (
+                    <div className="media-image-video">
+                      {courseHiddenInfo && courseHiddenInfo.video && <Button className="play-video" onClick={() => (setShowVideo(true))} iconBefore={PlayCircle} variant="inverse-primary">{intl.formatMessage(messages.playVideo)}</Button>}
+                      <img className="course-image" alt="banner" src={courseImageUrl} onError={imageErrorHandle} />
+                    </div>
+                  )
+                }
+                {
+                  showVideo && courseHiddenInfo.video && !courseHiddenInfo.video.startsWith('https://www.youtube.com')
+                  && (
+                  <video controls autoPlay>
+                    <source src={courseHiddenInfo.video} type={courseHiddenInfo.videoType ? courseHiddenInfo.videoType : 'video/mp4'} />
+                  </video>
+                  )
+                }
+                {
+                  showVideo && courseHiddenInfo.video && courseHiddenInfo.video.startsWith('https://www.youtube.com')
+                  && <iframe height="300" src={courseHiddenInfo.video} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                }
               </div>
             </div>
           </div>
@@ -148,20 +199,39 @@ const CourseAbout = ({ intl }) => {
             <div className="info-area container container-mw-lg">
               <div>
                 <div><Icon src={InfoOutline} className="fa fa-book" /></div>
-                <div>{intl.formatMessage(messages['Course number'])}: {courseDetailResponse.data.number}</div>
+                <div>
+                  <div className="fw-600">{intl.formatMessage(messages['Course number'])}: {courseDetailResponse.data.number}</div>
+                  <div className="s-text">{intl.formatMessage(messages.courseRun)}: {extractCourseRun()}</div>
+                </div>
               </div>
               <div>
                 <div><Icon src={Event} className="fa fa-book" /></div>
-                <div>{intl.formatMessage(messages.Start)}: {courseDetailResponse.data.start_display ? courseDetailResponse.data.start_display : new Date(courseDetailResponse.data.start).toLocaleDateString()}</div>
+                <div>
+                  <div className="fw-600">{intl.formatMessage(messages.Start)}: {toLocalDate(courseDetailResponse.data.start)}</div>
+                  <div className="s-text">{intl.formatMessage(messages.Enroll)}: {toLocalDate(courseDetailResponse.data.enrollment_start)}</div>
+                </div>
               </div>
               <div>
                 <div><Icon src={Person} className="fa fa-book" /></div>
-                <div>{courseDetailResponse.data.pacing === 'instructor' ? intl.formatMessage(messages['Instructor-Paced']) : intl.formatMessage(messages['Self-Paced'])}</div>
+                <div>
+                  <div className="fw-600">{courseDetailResponse.data.pacing === 'instructor' ? intl.formatMessage(messages['Instructor-Paced']) : intl.formatMessage(messages['Self-Paced'])}</div>
+                  <div className="s-text">{courseDetailResponse.data.pacing === 'instructor' ? intl.formatMessage(messages.progressAtInstructorPace) : intl.formatMessage(messages.progressAtYourOwnPace)}</div>
+                </div>
               </div>
             </div>
           </div>
           <div className="body-area-wrapper">
             <div className="body-area container container-mw-lg">
+              {
+                canEnrollRegardless
+                && (
+                <div className="view-course-in">
+                  <Button onClick={viewCourseClickedHandle} variant="outline-primary" iconAfter={ArrowForward}>{intl.formatMessage(messages.viewInLMS)}</Button>
+                  <Button onClick={viewCourseInStudioClickedHandle} variant="outline-danger" iconAfter={ArrowForward}>{intl.formatMessage(messages.viewInStudio)}</Button>
+                </div>
+                )
+              }
+
               <div className="about-content" dangerouslySetInnerHTML={{ __html: courseDetailResponse.data.overview }} />
             </div>
           </div>

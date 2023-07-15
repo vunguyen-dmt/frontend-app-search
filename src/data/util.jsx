@@ -1,3 +1,5 @@
+import Cookies from 'universal-cookie';
+
 const removeLastChar = (str, c) => {
   if (!str) {
     return str;
@@ -9,6 +11,7 @@ const removeLastChar = (str, c) => {
   }
   return str;
 };
+
 // eslint-disable-next-line import/prefer-default-export
 export const updateQueryStringParameter = (uri, key, value) => {
   const re = new RegExp(`([?&])${key}=.*?(&|$)`, 'i');
@@ -24,4 +27,9 @@ export const updateQueryStringParameter = (uri, key, value) => {
     return `${uri + separator + key}=${encodeURIComponent(value)}`;
   }
   return `${uri}`;
+};
+
+export const getCookie = (cookieName) => {
+  const cookies = new Cookies();
+  return cookies.get(cookieName);
 };
