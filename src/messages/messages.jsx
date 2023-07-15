@@ -101,6 +101,16 @@ const messages = defineMessages({
     defaultMessage: 'Self-Paced',
     description: '',
   },
+  clearAll: {
+    id: 'courses.search.clearAll',
+    defaultMessage: 'Clear all',
+    description: '',
+  },
+  language: {
+    id: 'courses.search.language',
+    defaultMessage: 'Language',
+    description: '',
+  },
 });
 
 export default messages;

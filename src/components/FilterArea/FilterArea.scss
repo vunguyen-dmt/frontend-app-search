@@ -1,0 +1,61 @@
+
+.filter-area-wrapper {
+    background-color: #F2F0EF;
+}
+
+.filter-area {
+    .filter-items {
+        >div {
+            margin-right: 1rem;
+        }
+    }
+
+    padding: 1rem;
+    .pgn_collapsible.collapsible-card {
+        width: 280px;
+        margin-right: 1rem;
+        &.availability {
+            width: 185px;
+        }
+    }
+    .collapsible-body {
+        z-index: 1;
+        background-color: white;
+        position: absolute;
+        padding: 0;
+        padding-left: 0;
+        .pgn__menu {
+            border-radius: 0;
+        }
+        .pgn__menu .pgn__menu-item {
+            max-width: 100%;
+        }
+    }
+
+    .selected-filters {
+        margin-top: 20px;;
+        .pgn__chip{
+            margin-right: 15px;
+        }
+        .pgn__chip.pgn__chip-dark {
+            background: #e1dddb;
+        }
+        .pgn__chip.pgn__chip-dark * {
+            color: var(--norm-text);
+        }
+        .clear {
+            font-size: 0.875rem;
+            padding: 5px 16px;
+        }
+    }
+
+    .pgn__form-checkbox.pgn__menu-item {
+        >div:nth-child(2) {
+            flex-grow: 1;
+        }
+    }
+
+    .pgn__modal-popup__tooltip {
+        margin-top: 8px;
+    }
+}

@@ -15,14 +15,19 @@
         border: 0!important;
         box-shadow: none;
         input {
+            font-size: 0.875rem;
             border: 0!important;
             outline: none!important;
+            &::placeholder  {
+                font-size: 0.875rem;
+            }
         }
         button[type="reset"] {
             color: var(--norm-text);
             border: 0;
             border-radius: 0;
             background-color: white;
+            padding: 0.4rem 1rem;
         }
         &::after {
             border: 0!important;
@@ -73,6 +78,7 @@
             li {
                 list-style: none;
                 a {
+                    cursor: pointer;
                     color: var(--norm-text);
                     padding: 0.5rem 1rem;
                     display: block;
@@ -93,43 +99,6 @@
     }
 }
 
-.filter-area-wrapper {
-    background-color: #F2F0EF;
-}
-
-.filter-area {
-    padding: 1rem;
-    .pgn_collapsible.collapsible-card {
-        width: 280px;
-        &.availability {
-            width: 185px;
-        }
-    }
-    .collapsible-body {
-        padding: 0;
-        padding-left: 0;
-        .pgn__menu {
-            border-radius: 0;
-        }
-        .pgn__menu .pgn__menu-item {
-            max-width: 100%;
-        }
-    }
-
-    .selected-filters {
-        margin-top: 1rem;
-        .pgn__chip.pgn__chip-dark {
-            background: #e1dddb;
-        }
-        .pgn__chip.pgn__chip-dark * {
-            color: var(--norm-text);
-        }
-        .clear {
-            font-size: 0.875rem;
-            padding: 5px 16px;
-        }
-    }
-}
 
 .search-result-wrapper {
     padding-top: 20px;
@@ -164,8 +133,13 @@
         max-width: 1500px;
         flex-wrap: wrap;
         >.pgn__card {
-            width: 350px;
-            margin: 0 20px 20px 0;
+            width: 280px;
+            margin: 0 19px 19px 0;
+            &:focus {
+                &::before {
+                    border: 0;
+                }
+            }
         }
         [class*="pgn__card-header-title-"] {
             display: -webkit-box;
@@ -179,10 +153,12 @@
         }
         .org-and-number {
             font-size: 0.875rem;
-            padding: 1rem 1.25rem 0 1.25rem;
+            padding: 1.4rem 1.25rem 0 1.25rem;
             font-weight: 400;
             display: flex;
+            flex-wrap: wrap;
             >div {
+                margin-top: 0.1rem;
                 &:not(:last-child){
                     margin-right: 1rem;
                 }
@@ -202,6 +178,14 @@
             font-size: 0.875rem;
             font-weight: 400;
         }
+        .pgn__card-logo-cap {
+            width: auto;
+            height: 60px;
+            max-width: 200px;
+        }
+        .pgn__card-wrapper-image-cap {
+            min-height: 128.94px;
+        }
     }
 }
 
@@ -215,3 +199,6 @@
     }
 }
 
+.s-text {
+    font-size: 0.875rem
+}

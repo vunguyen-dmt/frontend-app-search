@@ -6,6 +6,12 @@ export const searchCourse = (query) => {
   body.append('search_string', query.query);
   body.append('page_size', query.limit);
   body.append('page_index', query.page - 1);
+  if (query.org) {
+    body.append('org', query.org);
+  }
+  if (query.language) {
+    body.append('language', query.language);
+  }
   return getAuthenticatedHttpClient().post(`${getConfig().LMS_BASE_URL}/search/course_discovery/`, body);
 };
 

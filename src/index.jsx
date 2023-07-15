@@ -20,6 +20,7 @@ import './index.scss';
 import Search from './pages/search/search';
 import NotFoundPage from './pages/not-found/notFound';
 import CourseAbout from './pages/course-about/courseAbout';
+import { handleLanguageChange } from './handleLanguageChange';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
@@ -34,7 +35,13 @@ subscribe(APP_READY, () => {
           <Route exact path="/:id" component={CourseAbout} />
           <Route path="*" component={NotFoundPage} />
         </Switch>
-        <Footer />
+        <Footer
+          supportedLanguages={[
+            { label: 'English', value: 'en' },
+            { label: 'Tiếng Việt', value: 'vi' },
+          ]}
+          onLanguageSelected={handleLanguageChange}
+        />
       </AppProvider>
     </BrowserRouter>,
 
