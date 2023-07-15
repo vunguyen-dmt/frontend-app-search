@@ -1,13 +1,27 @@
 .head-area-wrapper {
     background-color: #fbfaf9;
-}
-
-.head-area  {
-    padding: 15px 0 30px 0;
     .org-logo {
         height: 60px;
         margin: 15px 0;
     }
+
+    .page-nav {
+        margin-top: 15px;
+        font-size: 0.875rem;
+       .pgn__hyperlink {
+            width: fit-content;
+            display: flex;
+            align-items: center;
+       }
+       .nav-text {
+        padding-left: 5px;
+       }
+    }
+}
+
+.head-area  {
+    padding: 15px 15px 30px 15px;
+
     .course-name {
         font-size: 2.25rem;
         font-weight: 700;
@@ -15,11 +29,28 @@
 
     display: flex;
     .media {
+        display: flex;
+        align-items: center;
         @media screen and (max-width: 768px) {
             display: none;
         }
         .course-image {
             max-width: 100%;
+            max-height: 300px;
+        }
+        .media-image-video {
+            display: flex;
+            align-items: center;
+            position: relative;
+            text-align: center;
+            .play-video {
+                position: absolute;
+                top:calc(50% - 22px);
+                left: calc(50% - 52px);
+            }
+        }
+        video {
+            height: 300px;
         }
     }
     >div {
@@ -28,17 +59,6 @@
             flex: unset;
         }
         padding-right : 1rem;
-    }
-
-    .page-nav {
-        font-size: 0.875rem;
-       .pgn__hyperlink {
-        display: flex;
-        align-items: center;
-       }
-       .nav-text {
-        padding-left: 5px;
-       }
     }
     .enroll-btn-wrapper {
         padding: 1rem 0;
@@ -58,31 +78,36 @@
 .info-area-wrapper {
     top: -30px;
     position: relative;
-    .skew {
-        transform: skew(-12deg);
-        position: absolute;
-        @media screen and (max-width: 600px) {
-            max-width: 100%!important;
-            transform: skew(0)!important;
-        }
-    }
     .skew-1 {
         background-color: #F2F0EF;
         height: 100%;
         z-index: 1;
-        max-width: 80%;
-        width: 1140px;
+        max-width: 90%;
+        width: 90%;
     }
 
     .skew-2 {
         background-color: #C32D3A;
         height: 50%;
         z-index: 0;
-        max-width: calc(80% + 8px);
+        max-width: calc(90% + 8px);
         bottom: 0;
-        width: 1148px;
+        width: calc(90% + 8px);
+        box-shadow: 0 2px 4px #00000026, 0 2px 8px #00000026;
     }
-
+    .skew {
+        transform: skew(-12deg);
+        position: absolute;
+        max-width: 1400px!important;
+        @media screen and (max-width: 600px) {
+            max-width: 100%!important;
+            width: 100%!important;
+            transform: skew(0)!important;
+        }
+        &.skew-2 {
+            max-width: 1408px!important;
+        }
+    }
     .info-area {
         display: flex;
         align-items: center;
@@ -99,12 +124,11 @@
                 &:first-child {
                     margin-right: 5px;
                     .pgn__icon {
-                        width:  26px;
-                        height: auto;
+                        width:  auto;
+                        height: 3.5rem;
                     }
                 }
                 &:nth-child(2) {
-                    font-weight: 600;
                     font-size: 1.2rem;
                 }
             }
@@ -129,5 +153,20 @@
                 }
             }
         }
+        .course-about-hidden-info {
+            display: none!important;
+        }
     }
+
+    .view-course-in {
+        display: flex;
+        margin-bottom: 20px;
+        > button {
+            margin-right: 1.5rem;
+        }
+    }
+}
+
+.fw-600 {
+    font-weight: 600;
 }

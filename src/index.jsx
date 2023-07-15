@@ -14,8 +14,8 @@ import {
   BrowserRouter, Route, Switch,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import messages from './i18n';
-
 import './index.scss';
 import Search from './pages/search/search';
 import NotFoundPage from './pages/not-found/notFound';

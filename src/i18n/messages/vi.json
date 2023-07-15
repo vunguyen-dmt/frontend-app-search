@@ -21,5 +21,12 @@
     "Instructor-Paced": "Có giảng viên hướng dẫn",
     "Self-Paced": "Tự học",
     "courses.search.clearAll": "Xóa tất cả",
-    "courses.search.language": "Ngôn ngữ"
+    "courses.search.language": "Ngôn ngữ",
+    "courses.about.courseRun": "Học kỳ",
+    "courses.about.enroll": "Đăng ký",
+    "courses.about.progressAtYourOwnPace": "Học theo tốc độ của bạn",
+    "courses.about.playVideo": "Xem video",
+    "courses.about.viewInLMS": "Xem trên LMS",
+    "courses.about.viewInStudio": "Xem trên Studio",
+    "courses.search.pageTitle": "Khóa học"
 }

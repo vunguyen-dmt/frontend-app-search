@@ -14,8 +14,11 @@ import messages from '../../messages/messages';
 import { updateQueryStringParameter } from '../../data/util';
 import FilterArea from '../../components/FilterArea/FilterArea';
 import hutechLogo from '../../assets/images/hutech-logo.png';
+import defaultCourseImage from '../../assets/images/default-course-image.jpg';
 
 const Search = ({ intl }) => {
+  document.title = `${intl.formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;
+
   const parsePage = () => {
     const page = Number(qs.parse(window.location.search, { ignoreQueryPrefix: true }).page);
     return isInt(page) ? Number(page) : 1;
@@ -201,6 +204,7 @@ const Search = ({ intl }) => {
                       >
                         <Card.ImageCap
                           src={`${getConfig().LMS_BASE_URL}${item.data.image_url}`}
+                          fallbackSrc={defaultCourseImage}
                           logoSrc={hutechLogo}
                           srcAlt="course image"
                         />

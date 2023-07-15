@@ -111,6 +111,46 @@ const messages = defineMessages({
     defaultMessage: 'Language',
     description: '',
   },
+  courseRun: {
+    id: 'courses.about.courseRun',
+    defaultMessage: 'Course run',
+    description: '',
+  },
+  Enroll: {
+    id: 'courses.about.enroll',
+    defaultMessage: 'Enroll',
+    description: '',
+  },
+  progressAtYourOwnPace: {
+    id: 'courses.about.progressAtYourOwnPace',
+    defaultMessage: 'Progress at your own pace',
+    description: '',
+  },
+  progressAtInstructorPace: {
+    id: 'courses.about.progressAtInstructorPace',
+    defaultMessage: 'Progress at instructors pace',
+    description: '',
+  },
+  playVideo: {
+    id: 'courses.about.playVideo',
+    defaultMessage: 'Play video',
+    description: '',
+  },
+  viewInLMS: {
+    id: 'courses.about.playVideo',
+    defaultMessage: 'View in LMS',
+    description: '',
+  },
+  viewInStudio: {
+    id: 'courses.about.playVideo',
+    defaultMessage: 'View in Studio',
+    description: '',
+  },
+  pageTitle: {
+    id: 'courses.search.pageTitle',
+    defaultMessage: 'Courses',
+    description: '',
+  },
 });
 
 export default messages;
