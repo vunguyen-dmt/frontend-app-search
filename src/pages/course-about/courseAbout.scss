@@ -44,6 +44,7 @@
             position: relative;
             text-align: center;
             .play-video {
+                border-radius: 0;
                 position: absolute;
                 top:calc(50% - 22px);
                 left: calc(50% - 52px);
@@ -163,6 +164,7 @@
         margin-bottom: 20px;
         > button {
             margin-right: 1.5rem;
+            border-radius: 0;
         }
     }
 }

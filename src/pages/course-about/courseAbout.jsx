@@ -43,7 +43,7 @@ const CourseAbout = ({ intl }) => {
 
   const extractCourseRun = () => {
     try {
-      return params.id.split('+')[1];
+      return params.id.split('+')[2];
     } catch {}
     return '';
   };
