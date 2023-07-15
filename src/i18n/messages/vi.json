@@ -19,5 +19,7 @@
     "The page you're looking for is unavailable or there's an error in the URL. Please check the URL and try again": "Không tìm thấy trang, có lỗi xảy ra hoặc địa chỉ không đúng. Vui lòng kiểm tra lại địa chỉ và thử lại.",
     "Course number": "Mã khóa học",
     "Instructor-Paced": "Có giảng viên hướng dẫn",
-    "Self-Paced": "Tự học"
+    "Self-Paced": "Tự học",
+    "courses.search.clearAll": "Xóa tất cả",
+    "courses.search.language": "Ngôn ngữ"
 }

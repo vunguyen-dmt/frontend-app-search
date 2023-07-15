@@ -1,0 +1,42 @@
+
+.filter-item-radio-wrapper {
+    .filter-item-toggle {
+        background-color: white;
+        border-radius: 0;
+        font-size: 0.875rem;
+    }
+    
+    .filter-item-toggle.has-value {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .badge {
+        margin-left: 5px;
+    }
+    
+    .pgn__form-radio.pgn__menu-item {
+        padding: 0 1rem;
+        height: auto;
+        > input {
+            flex-shrink: 0
+        };
+        >div {
+            &:nth-child(2) {
+                flex-grow: 1;
+                label {
+                    padding: 0.5625rem 1rem;
+                    .pgn__menu-item-text {
+                        display: flex;
+                        align-items: center;
+                        font-size: 0.875rem;
+                        .badge {
+                            margin-top: 1px;
+                            font-size: 0.875rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

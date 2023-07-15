@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
-  SearchField, Collapsible, Menu, MenuItem, Form, Chip,
-  Button, Breadcrumb, Icon, Hyperlink, Pagination, Card, Badge,
+  SearchField, Collapsible, Menu, MenuItem, Form,
+  Button, Breadcrumb, Icon, Hyperlink, Pagination, Card, Badge, ModalPopup, useToggle,
 } from '@edx/paragon';
-import { Close, Home } from '@edx/paragon/icons';
+import { Home } from '@edx/paragon/icons';
 import * as qs from 'qs';
 import { getConfig } from '@edx/frontend-platform';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
@@ -12,6 +12,8 @@ import { searchCourse } from '../../services/courseService';
 import './search.scss';
 import messages from '../../messages/messages';
 import { updateQueryStringParameter } from '../../data/util';
+import FilterArea from '../../components/FilterArea/FilterArea';
+import hutechLogo from '../../assets/images/hutech-logo.png';
 
 const Search = ({ intl }) => {
   const parsePage = () => {
@@ -28,8 +30,10 @@ const Search = ({ intl }) => {
   const [dropdownResponse, setDropdownResponse] = React.useState(null);
   const [searchResponse, setSearchResponse] = React.useState(null);
   const [numberOfPage, setNumberOfPage] = React.useState(1);
+
   const numberOfItemPerPage = 24;
   const setSearchBoxAutoCompleteOff = React.useRef(false);
+
   let searchDropdownTimerId;
 
   const isInt = (value) => !Number.isNaN(value)
@@ -98,15 +102,17 @@ const Search = ({ intl }) => {
   };
 
   const searchSubmittedHandle = () => {
-    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', searchQuery));
     clearTimeout(searchDropdownTimerId);
     setDropdownResponse(null);
     setQuery({ ...query, page: 1, query: searchQuery });
+    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', searchQuery));
   };
 
   const searchClearHandle = () => {
     clearTimeout(searchDropdownTimerId);
     setDropdownResponse(null);
+    setQuery({ ...query, page: 1, query: '' });
+    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', ''));
   };
 
   const goToHomeHandle = () => getConfig().LMS_BASE_URL;
@@ -121,10 +127,18 @@ const Search = ({ intl }) => {
     window.location.href = getConfig().PUBLIC_PATH;
   };
 
+  const handleFilterItemChange = (value) => {
+    const newData = { ...query };
+    newData.language = value.language;
+    newData.org = value.org;
+    setQuery(newData);
+    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'language', newData.language), 'org', newData.org));
+  };
+
   return (
-    <div>
+    <div className="search-page-wrapper">
       <div className="search-bg">
-        <div className="search-area container">
+        <div className="search-area container container-mw-lg">
           <div className="title">{intl.formatMessage(messages['Search our catalog'])}</div>
           <SearchField
             submitButtonLocation="external"
@@ -152,30 +166,11 @@ const Search = ({ intl }) => {
           }
         </div>
       </div>
-      {/* <div className="filter-area-wrapper">
-        <div className="filter-area container">
-          <div>
-            <Collapsible title="Availability" className="availability">
-              <Menu>
-                <MenuItem as={Form.Checkbox}>Available Now</MenuItem>
-                <MenuItem as={Form.Checkbox}>Upcomming</MenuItem>
-                <MenuItem as={Form.Checkbox}>Archieved</MenuItem>
-              </Menu>
-            </Collapsible>
-          </div>
-          <div className="selected-filters">
-            <Chip
-              iconAfter={Close}
-              onIconAfterClick={() => console.log('Remove Chip')}
-            >
-              Available Now
-            </Chip>
-            <Button variant="tertiary" className="mb-2 mb-sm-0 clear">Clear all</Button>
-          </div>
-        </div>
-      </div> */}
+      {
+        searchResponse && <FilterArea aggs={searchResponse?.data.aggs} onChange={handleFilterItemChange} />
+      }
       <div className="search-result-wrapper">
-        <div className="search-result container">
+        <div className="search-result container container-mw-lg">
           <div className="page-nav d-flex">
             <Hyperlink destination={goToHomeHandle()} className="mr-1">
               <Icon
@@ -194,7 +189,7 @@ const Search = ({ intl }) => {
           <div>
             <div>
               <div className="title">{intl.formatMessage(messages.Courses)}</div>
-              {searchResponse?.data.results.length > 0 && searchQuery && <p className="small">{searchResponse?.data.total} {intl.formatMessage(messages['results on'])} {process.env.SITE_NAME}.</p>}
+              {searchResponse?.data.results.length > 0 && (searchQuery || query.language || query.org) && <p className="small">{searchResponse?.data.total} {intl.formatMessage(messages['results on'])} {process.env.SITE_NAME}.</p>}
               <div className="card-list d-flex">
                 {
                     searchResponse?.data.results.map((item) => (
@@ -206,12 +201,14 @@ const Search = ({ intl }) => {
                       >
                         <Card.ImageCap
                           src={`${getConfig().LMS_BASE_URL}${item.data.image_url}`}
+                          logoSrc={hutechLogo}
                           srcAlt="course image"
                         />
                         <div className="org-and-number">
                           <div>
                             <Badge variant="light">{intl.formatMessage(messages.Course)}</Badge>
                           </div>
+                          <div>{item.data.org}</div>
                           <div>{item.data.number}</div>
                         </div>
                         <Card.Header
@@ -221,7 +218,7 @@ const Search = ({ intl }) => {
                           <div className="space" />
                         </Card.Section>
                         <Card.Footer>
-                          <div className="small mt-1">{intl.formatMessage(messages.Start)}: {item.data?.start ? new Date(item.data.start).toLocaleDateString() : ''}</div>
+                          <div className="s-text mt-1">{intl.formatMessage(messages.Start)}: {item.data?.start ? new Date(item.data.start).toLocaleDateString() : ''}</div>
                         </Card.Footer>
                       </Card>
                     ))

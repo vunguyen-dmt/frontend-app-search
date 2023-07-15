@@ -15,6 +15,7 @@ import {
   getCourseEnrollmentInfo, getEnrollmentRole, enroll, getEnrollInfoForAUserInACourse,
 } from '../../services/enrollmentService';
 import messages from '../../messages/messages';
+import hutechLogo from '../../assets/images/hutech-logo.png';
 
 const CourseAbout = ({ intl }) => {
   const [courseDetailResponse, setCourseDetailResponse] = React.useState(null);
@@ -55,7 +56,6 @@ const CourseAbout = ({ intl }) => {
 
     if (user) {
       getEnrollInfoForAUserInACourse(params.id, user.username).then(response => {
-        console.log(response.data);
         if (response.data && response.data.is_active) {
           setIsEnrolled(1);
         } else {
@@ -112,7 +112,7 @@ const CourseAbout = ({ intl }) => {
         && (
         <div>
           <div className="head-area-wrapper">
-            <div className="head-area container">
+            <div className="head-area container container-mw-lg">
               <div>
                 <div className="page-nav">
                   <Hyperlink destination={backToCoursesHandle()} className="mr-1">
@@ -122,6 +122,9 @@ const CourseAbout = ({ intl }) => {
                       className="fa fa-book"
                     /><span className="nav-text">{intl.formatMessage(messages.Courses)}</span>
                   </Hyperlink>
+                </div>
+                <div>
+                  <img alt="org logo" className="org-logo" src={hutechLogo} />
                 </div>
                 <div><div className="course-name">{courseDetailResponse.data.name}</div></div>
                 <div className="short-description">{courseDetailResponse.data.short_description}</div>
@@ -142,7 +145,7 @@ const CourseAbout = ({ intl }) => {
           <div className="info-area-wrapper">
             <div className="skew-1 skew" />
             <div className="skew-2 skew" />
-            <div className="info-area container">
+            <div className="info-area container container-mw-lg">
               <div>
                 <div><Icon src={InfoOutline} className="fa fa-book" /></div>
                 <div>{intl.formatMessage(messages['Course number'])}: {courseDetailResponse.data.number}</div>
@@ -158,8 +161,8 @@ const CourseAbout = ({ intl }) => {
             </div>
           </div>
           <div className="body-area-wrapper">
-            <div className="body-area container">
-              <div dangerouslySetInnerHTML={{ __html: courseDetailResponse.data.overview }} />
+            <div className="body-area container container-mw-lg">
+              <div className="about-content" dangerouslySetInnerHTML={{ __html: courseDetailResponse.data.overview }} />
             </div>
           </div>
         </div>
@@ -167,7 +170,7 @@ const CourseAbout = ({ intl }) => {
       {
             notFound && (
             <div className="text-center my-6">
-              <div>{intl.formatMessage(messages['The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again'])}.</div>
+              <div>{intl.formatMessage(messages['The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again'])}</div>
             </div>
             )
         }
