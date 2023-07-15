@@ -137,12 +137,12 @@ const messages = defineMessages({
     description: '',
   },
   viewInLMS: {
-    id: 'courses.about.playVideo',
+    id: 'courses.about.viewInLMS',
     defaultMessage: 'View in LMS',
     description: '',
   },
   viewInStudio: {
-    id: 'courses.about.playVideo',
+    id: 'courses.about.viewInStudio',
     defaultMessage: 'View in Studio',
     description: '',
   },
