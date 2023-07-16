@@ -3,7 +3,7 @@ import './courseAbout.scss';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { useParams } from 'react-router-dom';
 import {
-  Hyperlink, Icon, Button,
+  Hyperlink, Icon, Button, Spinner,
 } from '@edx/paragon';
 import {
   ArrowBackIos, Event, InfoOutline, Person, ArrowForward, PlayCircle,
@@ -136,9 +136,12 @@ const CourseAbout = ({ intl }) => {
 
   return (
     <div>
+      {
+        !courseDetailResponse && !notFound && <div className="text-center mt-3"><Spinner animation="border" className="mie-3" screenReaderText="loading" /></div>
+      }
       { courseDetailResponse
         && (
-        <div>
+        <div className="about-page-wrapper">
           <div className="head-area-wrapper">
             <div className="container container-mw-lg">
               <div className="page-nav">
