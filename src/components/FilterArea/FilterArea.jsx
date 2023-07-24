@@ -8,7 +8,7 @@ import messages from '../../messages/messages';
 import * as qs from 'qs';
 import { languageDict } from '../../data/languageCode';
 
-const FilterArea = ({ aggs, onChange, intl }) => {
+const FilterArea = ({ data, onChange, intl }) => {
   const [filterData, setFilterData] = React.useState({ language: null, org: null });
   const [chipBag, setChipBag] = React.useState([]);
   React.useEffect(() => {
@@ -72,8 +72,8 @@ const FilterArea = ({ aggs, onChange, intl }) => {
     <div className="filter-area-wrapper">
       <div className="filter-area container container-mw-lg">
         <div className="d-flex filter-items">
-          <FilterItemRadio value={filterData.language} onChange={handleFilterItemChange} title={intl.formatMessage(messages.language)} data={aggs.language.terms} filterName="language" />
-          <FilterItemRadio value={filterData.org} onChange={handleFilterItemChange} title="Org" data={aggs.org.terms} filterName="org" />
+          <FilterItemRadio value={filterData.language} onChange={handleFilterItemChange} title={intl.formatMessage(messages.language)} data={data.languages} filterName="language" />
+          <FilterItemRadio value={filterData.org} onChange={handleFilterItemChange} title={intl.formatMessage(messages.facultyCode)} data={data.orgs} filterName="org" />
         </div>
         <div className="selected-filters">
           {
