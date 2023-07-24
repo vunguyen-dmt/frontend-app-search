@@ -29,8 +29,8 @@ export const FilterItemRadio = ({
             >
               <Menu>
                 {
-                  data && Object.entries(data).map(([key, filterValue]) => (
-                    <MenuItem key={key} as={Form.Radio} value={key}>{filterName === 'language' && key in languageDict ? languageDict[key].name : key}<Badge variant="dark">{filterValue}</Badge></MenuItem>
+                  data.map((item) => (
+                    <MenuItem key={item} as={Form.Radio} value={item}>{filterName === 'language' && item in languageDict ? languageDict[item].name : item}</MenuItem>
                   ))
                 }
               </Menu>

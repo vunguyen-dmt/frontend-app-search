@@ -8,7 +8,7 @@ import { Home } from '@edx/paragon/icons';
 import * as qs from 'qs';
 import { getConfig } from '@edx/frontend-platform';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
-import { searchCourse } from '../../services/courseService';
+import { searchCourse, getCourseFilters } from '../../services/courseService';
 import './search.scss';
 import messages from '../../messages/messages';
 import { updateQueryStringParameter } from '../../data/util';
@@ -33,6 +33,7 @@ const Search = ({ intl }) => {
   const [dropdownResponse, setDropdownResponse] = React.useState(null);
   const [searchResponse, setSearchResponse] = React.useState(null);
   const [numberOfPage, setNumberOfPage] = React.useState(1);
+  const [courseFilters, setCourseFilters] = React.useState({});
 
   const numberOfItemPerPage = 24;
   const setSearchBoxAutoCompleteOff = React.useRef(false);
@@ -50,6 +51,12 @@ const Search = ({ intl }) => {
     limit: numberOfItemPerPage,
     query: parseQuery(),
   });
+
+  React.useEffect(() => {
+    getCourseFilters().then(response => {
+      setCourseFilters(response.data.results);
+    });
+  }, []);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -159,7 +166,7 @@ const Search = ({ intl }) => {
               <ul>
                 {
                 dropdownResponse.data.results.map((item) => (
-                  <li key={item.data.id}><a onClick={() => goToCourseAboutPage(item.data.id)}>{item.data.content.display_name} <Badge variant="light">{item.data.number}</Badge></a></li>
+                  <li key={item.id}><a onClick={() => goToCourseAboutPage(item.id)}>{item.display_name} <Badge variant="light">{item.display_number_with_default}</Badge></a></li>
                 ))
               }
                 {dropdownResponse.data.total > 5 && <li className="view-all-search-result"><a onClick={searchSubmittedHandle}>{intl.formatMessage(messages['View all results'])}</a></li>}
@@ -170,7 +177,7 @@ const Search = ({ intl }) => {
         </div>
       </div>
       {
-        searchResponse && <FilterArea aggs={searchResponse?.data.aggs} onChange={handleFilterItemChange} />
+        searchResponse && <FilterArea data={courseFilters} onChange={handleFilterItemChange} />
       }
       <div className="search-result-wrapper">
         <div className="search-result container container-mw-lg">
@@ -197,13 +204,13 @@ const Search = ({ intl }) => {
                 {
                     searchResponse?.data.results.map((item) => (
                       <Card
-                        key={item.data.id}
+                        key={item.id}
                         as={Hyperlink}
-                        destination={courseAboutPageUrl(item.data.id)}
+                        destination={courseAboutPageUrl(item.id)}
                         isClickable
                       >
                         <Card.ImageCap
-                          src={`${getConfig().LMS_BASE_URL}${item.data.image_url}`}
+                          src={`${getConfig().LMS_BASE_URL}${item.course_image_url}`}
                           fallbackSrc={defaultCourseImage}
                           logoSrc={hutechLogo}
                           srcAlt="course image"
@@ -212,17 +219,17 @@ const Search = ({ intl }) => {
                           <div>
                             <Badge variant="light">{intl.formatMessage(messages.Course)}</Badge>
                           </div>
-                          <div>{item.data.org}</div>
-                          <div>{item.data.number}</div>
+                          <div>{item.display_org_with_default}</div>
+                          <div>{item.display_number_with_default}</div>
                         </div>
                         <Card.Header
-                          title={item.data.content.display_name}
+                          title={item.display_name}
                         />
                         <Card.Section>
                           <div className="space" />
                         </Card.Section>
                         <Card.Footer>
-                          <div className="s-text mt-1">{intl.formatMessage(messages.Start)}: {item.data?.start ? new Date(item.data.start).toLocaleDateString() : ''}</div>
+                          <div className="s-text mt-1">{intl.formatMessage(messages.Start)}: {item.start ? new Date(item.start).toLocaleDateString() : ''}</div>
                         </Card.Footer>
                       </Card>
                     ))
