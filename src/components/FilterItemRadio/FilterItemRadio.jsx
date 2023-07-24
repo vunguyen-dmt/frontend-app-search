@@ -30,7 +30,7 @@ export const FilterItemRadio = ({
               <Menu>
                 {
                   data.map((item) => (
-                    <MenuItem key={item} as={Form.Radio} value={item}>{filterName === 'language' && item in languageDict ? languageDict[item].name : item}</MenuItem>
+                    <MenuItem key={item} as={Form.Radio} value={item}>{filterName === 'language' && item in languageDict ? languageDict[item].nativeName : item}</MenuItem>
                   ))
                 }
               </Menu>
