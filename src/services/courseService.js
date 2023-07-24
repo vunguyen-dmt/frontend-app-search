@@ -24,14 +24,14 @@ export const searchCourse = (query) => {
     language: query.language
   };
 
-  var baseUrl = "https://insights.lms.hutech.edu.vn";
+  var baseUrl = "https://api.hutech-elearning-insights.goamazing.org";
   // var baseUrl = "https://localhost:5001";
 
   return getHttpClient().post(`${baseUrl}/search`, body);
 };
 
 export const getCourseFilters = () => {
-  var baseUrl = "https://insights.lms.hutech.edu.vn";
+  var baseUrl = "https://api.hutech-elearning-insights.goamazing.org";
   // var baseUrl = "https://localhost:5001";
 
   return getHttpClient().get(`${baseUrl}/search/filters`);
