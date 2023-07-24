@@ -59,7 +59,7 @@ const Search = ({ intl }) => {
   }, []);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
       clearTimeout(searchDropdownTimerId);
     });
@@ -115,7 +115,9 @@ const Search = ({ intl }) => {
     clearTimeout(searchDropdownTimerId);
     setDropdownResponse(null);
     setQuery({ ...query, page: 1, query: searchQuery });
-    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', searchQuery));
+    let path = updateQueryStringParameter(`/${window.location.search}`, 'page', 1);
+    path = updateQueryStringParameter(path, 'q', searchQuery);
+    history.push(path);
   };
 
   const searchClearHandle = () => {
@@ -141,8 +143,12 @@ const Search = ({ intl }) => {
     const newData = { ...query };
     newData.language = value.language;
     newData.org = value.org;
+    newData.page = 1;
     setQuery(newData);
-    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'language', newData.language), 'org', newData.org));
+    let path = updateQueryStringParameter(`/${window.location.search}`, 'language', newData.language);
+    path = updateQueryStringParameter(path, 'org', newData.org);
+    path = updateQueryStringParameter(path, 'page', 1);
+    history.push(path);
   };
 
   return (
