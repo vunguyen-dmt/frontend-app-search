@@ -1,8 +1,8 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
-  SearchField, Collapsible, Menu, MenuItem, Form,
-  Button, Breadcrumb, Icon, Hyperlink, Pagination, Card, Badge, ModalPopup, useToggle,
+  SearchField,
+  Button, Breadcrumb, Icon, Hyperlink, Pagination, Card, Badge,
 } from '@edx/paragon';
 import { Home } from '@edx/paragon/icons';
 import * as qs from 'qs';
@@ -141,13 +141,14 @@ const Search = ({ intl }) => {
 
   const handleFilterItemChange = (value) => {
     const newData = { ...query };
-    newData.language = value.language;
-    newData.org = value.org;
+    let path = updateQueryStringParameter(`/${window.location.search}`, 'page', 1);
+    Object.keys(value).forEach(i => {
+      newData[i] = value[i];
+      path = updateQueryStringParameter(path, i, value[i]);
+    });
+
     newData.page = 1;
     setQuery(newData);
-    let path = updateQueryStringParameter(`/${window.location.search}`, 'language', newData.language);
-    path = updateQueryStringParameter(path, 'org', newData.org);
-    path = updateQueryStringParameter(path, 'page', 1);
     history.push(path);
   };
 
@@ -205,10 +206,23 @@ const Search = ({ intl }) => {
           <div>
             <div>
               <div className="title">{intl.formatMessage(messages.Courses)}</div>
-              {searchResponse?.data.results.length > 0 && (searchQuery || query.language || query.org) && <p className="small">{searchResponse?.data.total} {intl.formatMessage(messages['results on'])} {process.env.SITE_NAME}.</p>}
+              {searchResponse?.data.results.length > 0 && (searchQuery || query.language || query.org || query.run) && <p className="small">{searchResponse?.data.total} {intl.formatMessage(messages['results on'])} {process.env.SITE_NAME}.</p>}
               <div className="card-list d-flex">
                 {
-                    searchResponse?.data.results.map((item) => (
+                  !searchResponse && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+                    <Card className="course-placeholder">
+                      <div className="skeleton image-placeholder" />
+                      <div className="skeleton first-line-placeholder" />
+                      <div className="skeleton second-line-placeholder" />
+                      <Card.Section>
+                        <div className="space" />
+                      </Card.Section>
+                      <div className="skeleton third-line-placeholder" />
+                    </Card>
+                  ))
+                }
+                {
+                    searchResponse && searchResponse.data.results.map((item) => (
                       <Card
                         key={item.id}
                         as={Hyperlink}

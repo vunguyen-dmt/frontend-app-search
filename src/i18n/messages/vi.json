@@ -30,5 +30,6 @@
     "courses.about.viewInLMS": "Xem trên LMS",
     "courses.about.viewInStudio": "Xem trên Studio",
     "courses.search.pageTitle": "Khóa học",
-    "courses.search.facultyCode": "Mã Khoa"
+    "courses.search.facultyCode": "Mã Khoa",
+    "courses.search.run": "Học kỳ"
 }
