@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Menu, MenuItem, Button, Badge, ModalPopup, useToggle, Form,
+  Menu, MenuItem, Button, ModalPopup, useToggle, Form,
 } from '@edx/paragon';
 import { ArrowDropDown } from '@edx/paragon/icons';
 import './FilterItemRadio.scss';
@@ -29,7 +29,7 @@ export const FilterItemRadio = ({
             >
               <Menu>
                 {
-                  data.map((item) => (
+                  data && data.map((item) => (
                     <MenuItem key={item} as={Form.Radio} value={item}>{filterName === 'language' && item in languageDict ? languageDict[item].nativeName : item}</MenuItem>
                   ))
                 }

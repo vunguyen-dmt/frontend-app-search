@@ -224,3 +224,22 @@
 .s-text {
     font-size: 0.875rem
 }
+
+.course-placeholder {
+    .image-placeholder {
+        height: 140px;
+    }
+    .first-line-placeholder {
+        margin: 10px 1.25rem 0;
+        height: 22px;
+        border-radius: 4px;
+    }
+    .second-line-placeholder {
+        margin: 5px 1.25rem 0;
+        height: 22px;
+        border-radius: 4px;
+    }
+    .third-line-placeholder {
+        height: 40px;
+    }
+}

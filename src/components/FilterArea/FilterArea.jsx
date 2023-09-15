@@ -9,24 +9,27 @@ import * as qs from 'qs';
 import { languageDict } from '../../data/languageCode';
 
 const FilterArea = ({ data, onChange, intl }) => {
-  const [filterData, setFilterData] = React.useState({ language: null, org: null });
+  const filters = ['language', 'org', 'run'];
+  const filterValues = {};
+  filters.forEach(i => {
+    filterValues[i] = null;
+  });
+  const [filterData, setFilterData] = React.useState(filterValues);
   const [chipBag, setChipBag] = React.useState([]);
   React.useEffect(() => {
-    const { language } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-    const { org } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-    if (language || org) {
-      const newFilterData = {
-        language,
-        org,
-      };
+    const queryParams = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    const newChipBag = [];
+    const newFilterData = {};
+    let dataChanged = false;
+    Object.keys(queryParams).forEach(i => {
+      if (filters.includes(i)) {
+        dataChanged = true;
+        newChipBag.push({ key: i, value: queryParams[i] });
+        newFilterData[i] = queryParams[i];
+      }
+    });
+    if (dataChanged) {
       setFilterData(newFilterData);
-      const newChipBag = [];
-      if (language) {
-        newChipBag.push({ key: 'language', value: newFilterData.language });
-      }
-      if (org) {
-        newChipBag.push({ key: 'org', value: newFilterData.org });
-      }
       setChipBag(newChipBag);
       onChange(newFilterData);
     }
@@ -38,12 +41,12 @@ const FilterArea = ({ data, onChange, intl }) => {
     setFilterData(newFilterData);
     onChange(newFilterData);
     const newChipBag = [];
-    if (newFilterData.language) {
-      newChipBag.push({ key: 'language', value: newFilterData.language });
-    }
-    if (newFilterData.org) {
-      newChipBag.push({ key: 'org', value: newFilterData.org });
-    }
+    Object.keys(newFilterData).forEach(i => {
+      if (newFilterData[i]) {
+        newChipBag.push({ key: i, value: newFilterData[i] });
+      }
+    });
+
     setChipBag(newChipBag);
   };
 
@@ -63,7 +66,10 @@ const FilterArea = ({ data, onChange, intl }) => {
 
   const handleClearAll = () => {
     setChipBag([]);
-    const newFilterData = { language: null, org: null };
+    const newFilterData = {};
+    filters.forEach(i => {
+      newFilterData[i] = null;
+    });
     setFilterData(newFilterData);
     onChange(newFilterData);
   };
@@ -74,6 +80,7 @@ const FilterArea = ({ data, onChange, intl }) => {
         <div className="d-flex filter-items">
           <FilterItemRadio value={filterData.language} onChange={handleFilterItemChange} title={intl.formatMessage(messages.language)} data={data.languages} filterName="language" />
           <FilterItemRadio value={filterData.org} onChange={handleFilterItemChange} title={intl.formatMessage(messages.facultyCode)} data={data.orgs} filterName="org" />
+          <FilterItemRadio value={filterData.run} onChange={handleFilterItemChange} title={intl.formatMessage(messages.courseRun)} data={data.runs} filterName="run" />
         </div>
         <div className="selected-filters">
           {

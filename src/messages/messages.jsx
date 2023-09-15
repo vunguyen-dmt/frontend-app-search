@@ -156,6 +156,11 @@ const messages = defineMessages({
     defaultMessage: 'Faculty code',
     description: '',
   },
+  runs: {
+    id: 'courses.search.courseRun',
+    defaultMessage: 'Course run',
+    description: '',
+  },
 });
 
 export default messages;
