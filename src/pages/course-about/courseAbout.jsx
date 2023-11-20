@@ -65,6 +65,9 @@ const CourseAbout = ({ intl }) => {
   React.useEffect(() => {
     const courseId = params.id;
     getCourseDetail(courseId, user?.username).then(response => {
+      if (response && response.name && response.name.startsWith('[OC] ')) {
+        response.name = response.name.replace('[OC] ', '');
+      }
       setCourseDetailResponse(response);
       setCourseImageUrl(response.data.media.image.small);
       document.title = `${response.data.name} | ${intl.formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;

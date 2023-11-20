@@ -64,6 +64,13 @@ const Search = ({ intl }) => {
       clearTimeout(searchDropdownTimerId);
     });
     searchCourse(query).then(response => {
+      if (response && response.results) {
+        response.results.forEach(i => {
+          if (i.display_name && i.display_name.startsWith('[OC] ')) {
+            i.display_name = i.display_name.replace('[OC] ', '');
+          }
+        });
+      }
       setSearchResponse(response);
       setNumberOfPage(Math.ceil(response.data.total / numberOfItemPerPage));
     });
