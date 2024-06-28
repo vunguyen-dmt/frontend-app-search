@@ -1,13 +1,13 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   SearchField,
   Button, Breadcrumb, Icon, Hyperlink, Pagination, Card, Badge,
-} from '@edx/paragon';
-import { Home } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Home } from '@openedx/paragon/icons';
 import * as qs from 'qs';
 import { getConfig } from '@edx/frontend-platform';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { searchCourse, getCourseFilters } from '../../services/courseService';
 import './search.scss';
 import messages from '../../messages/messages';
@@ -16,8 +16,9 @@ import FilterArea from '../../components/FilterArea/FilterArea';
 import hutechLogo from '../../assets/images/hutech-logo.png';
 import defaultCourseImage from '../../assets/images/default-course-image.jpg';
 
-const Search = ({ intl }) => {
-  document.title = `${intl.formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;
+const Search = () => {
+  const { formatMessage } = useIntl();
+  document.title = `${formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;
 
   const parsePage = () => {
     const page = Number(qs.parse(window.location.search, { ignoreQueryPrefix: true }).page);
@@ -44,7 +45,8 @@ const Search = ({ intl }) => {
            && parseInt(Number(value)) == value
            && !Number.isNaN(parseInt(value));
 
-  const history = useHistory();
+  // const history = useHistory();
+  const navigate  = useNavigate();
 
   const [query, setQuery] = React.useState({
     page: parsePage(),
@@ -74,7 +76,7 @@ const Search = ({ intl }) => {
       setSearchResponse(response);
       setNumberOfPage(Math.ceil(response.data.total / numberOfItemPerPage));
     });
-  }, [query, history]);
+  }, [query, navigate]);
 
   React.useEffect(() => {
     if (!setSearchBoxAutoCompleteOff.current) {
@@ -108,7 +110,8 @@ const Search = ({ intl }) => {
   };
 
   const pagingClickedHandle = (page) => {
-    history.push(updateQueryStringParameter(`/${window.location.search}`, 'page', page));
+    navigate(updateQueryStringParameter(`/${window.location.search}`, 'page', page));
+    // history.push(updateQueryStringParameter(`/${window.location.search}`, 'page', page));
     setQuery({ ...query, page });
   };
 
@@ -124,14 +127,16 @@ const Search = ({ intl }) => {
     setQuery({ ...query, page: 1, query: searchQuery });
     let path = updateQueryStringParameter(`/${window.location.search}`, 'page', 1);
     path = updateQueryStringParameter(path, 'q', searchQuery);
-    history.push(path);
+    navigate(path);
+    // history.push(path);
   };
 
   const searchClearHandle = () => {
     clearTimeout(searchDropdownTimerId);
     setDropdownResponse(null);
     setQuery({ ...query, page: 1, query: '' });
-    history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', ''));
+    navigate(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', ''));
+    // history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', ''));
   };
 
   const goToHomeHandle = () => getConfig().LMS_BASE_URL;
@@ -156,18 +161,19 @@ const Search = ({ intl }) => {
 
     newData.page = 1;
     setQuery(newData);
-    history.push(path);
+    navigate(path);
+    // history.push(path);
   };
 
   return (
     <div className="search-page-wrapper">
       <div className="search-bg">
         <div className="search-area container container-mw-lg">
-          <div className="title">{intl.formatMessage(messages['Search our catalog'])}</div>
+          <div className="title">{formatMessage(messages.searchOurCatalog)}</div>
           <SearchField
             submitButtonLocation="external"
-            buttonText={intl.formatMessage(messages.Search)}
-            placeholder={intl.formatMessage(messages['What are you looking for?'])}
+            buttonText={formatMessage(messages.Search)}
+            placeholder={formatMessage(messages.whatAreYouLookingFor)}
             value={searchQuery}
             onSubmit={searchSubmittedHandle}
             onChange={searchBoxOnChangeHandle}
@@ -183,7 +189,7 @@ const Search = ({ intl }) => {
                   <li key={item.id}><a onClick={() => goToCourseAboutPage(item.id)}>{item.display_name} <Badge variant="light">{item.display_number_with_default}</Badge></a></li>
                 ))
               }
-                {dropdownResponse.data.total > 5 && <li className="view-all-search-result"><a onClick={searchSubmittedHandle}>{intl.formatMessage(messages['View all results'])}</a></li>}
+                {dropdownResponse.data.total > 5 && <li className="view-all-search-result"><a onClick={searchSubmittedHandle}>{formatMessage(messages.ViewAllResults)}</a></li>}
               </ul>
             </div>
             )
@@ -205,15 +211,15 @@ const Search = ({ intl }) => {
             <Breadcrumb
               ariaLabel="Breadcrumb basic"
               links={[
-                { label: intl.formatMessage(messages.Home), href: getConfig().LMS_BASE_URL },
+                { label: formatMessage(messages.Home), href: getConfig().LMS_BASE_URL },
               ]}
-              activeLabel={intl.formatMessage(messages.Search)}
+              activeLabel={formatMessage(messages.Search)}
             />
           </div>
           <div>
             <div>
-              <div className="title">{intl.formatMessage(messages.Courses)}</div>
-              {searchResponse?.data.results.length > 0 && (searchQuery || query.language || query.org || query.run) && <p className="small">{searchResponse?.data.total} {intl.formatMessage(messages['results on'])} {process.env.SITE_NAME}.</p>}
+              <div className="title">{formatMessage(messages.Courses)}</div>
+              {searchResponse?.data.results.length > 0 && (searchQuery || query.language || query.org || query.run) && <p className="small">{searchResponse?.data.total} {formatMessage(messages.resultsOn)} {process.env.SITE_NAME}.</p>}
               <div className="card-list d-flex">
                 {
                   !searchResponse && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
@@ -244,7 +250,7 @@ const Search = ({ intl }) => {
                         />
                         <div className="org-and-number">
                           <div>
-                            <Badge variant="light">{intl.formatMessage(messages.Course)}</Badge>
+                            <Badge variant="light">{formatMessage(messages.Course)}</Badge>
                           </div>
                           <div>{item.display_org_with_default}</div>
                           <div>{item.display_number_with_default}</div>
@@ -256,7 +262,7 @@ const Search = ({ intl }) => {
                           <div className="space" />
                         </Card.Section>
                         <Card.Footer>
-                          <div className="s-text mt-1">{intl.formatMessage(messages.Start)}: {item.start ? new Date(item.start).toLocaleDateString() : ''}</div>
+                          <div className="s-text mt-1">{formatMessage(messages.Start)}: {item.start ? new Date(item.start).toLocaleDateString() : ''}</div>
                         </Card.Footer>
                       </Card>
                     ))
@@ -265,9 +271,9 @@ const Search = ({ intl }) => {
               {
                   searchResponse && searchResponse.data.results.length === 0 && (
                   <div className="text-center">
-                    <p>{intl.formatMessage(messages['No courses were found to match your search query'])}.</p>
+                    <p>{formatMessage(messages.noCourseMatch)}.</p>
                     <div>
-                      <Button size="sm" onClick={backToCoursesHandle} variant="link" size="inline">{intl.formatMessage(messages['Back to search'])}</Button>
+                      <Button size="sm" onClick={backToCoursesHandle} variant="link">{formatMessage(messages.backToSearch)}</Button>
                     </div>
                   </div>
                   )
@@ -295,8 +301,4 @@ const Search = ({ intl }) => {
   );
 };
 
-Search.propTypes = {
-  intl: intlShape.isRequired,
-};
-
-export default injectIntl(Search);
+export default Search;

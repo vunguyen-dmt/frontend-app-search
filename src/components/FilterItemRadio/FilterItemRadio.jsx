@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Menu, MenuItem, Button, ModalPopup, useToggle, Form,
-} from '@edx/paragon';
-import { ArrowDropDown } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { ArrowDropDown } from '@openedx/paragon/icons';
 import './FilterItemRadio.scss';
 import { languageDict } from '../../data/languageCode';
 

@@ -3,6 +3,10 @@
 }
 
 .search-area {
+    .pgn__searchfield .pgn__searchfield-form {
+        background-color: transparent!important;
+    }
+
     padding: 2rem 1rem;
     .title {
         color: white;

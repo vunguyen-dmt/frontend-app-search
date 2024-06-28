@@ -1,14 +1,15 @@
 import React from 'react';
-import { Chip, Button } from '@edx/paragon';
-import { Close } from '@edx/paragon/icons';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import { Chip, Button } from '@openedx/paragon';
+import { Close } from '@openedx/paragon/icons';
 import { FilterItemRadio } from '../FilterItemRadio/FilterItemRadio';
 import './FilterArea.scss';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import messages from '../../messages/messages';
 import * as qs from 'qs';
 import { languageDict } from '../../data/languageCode';
 
-const FilterArea = ({ data, onChange, intl }) => {
+const FilterArea = ({ data, onChange }) => {
+  const { formatMessage } = useIntl();
   const filters = ['language', 'org', 'run'];
   const filterValues = {};
   filters.forEach(i => {
@@ -78,9 +79,9 @@ const FilterArea = ({ data, onChange, intl }) => {
     <div className="filter-area-wrapper">
       <div className="filter-area container container-mw-lg">
         <div className="d-flex filter-items">
-          <FilterItemRadio value={filterData.language} onChange={handleFilterItemChange} title={intl.formatMessage(messages.language)} data={data.languages} filterName="language" />
-          <FilterItemRadio value={filterData.org} onChange={handleFilterItemChange} title={intl.formatMessage(messages.facultyCode)} data={data.orgs} filterName="org" />
-          <FilterItemRadio value={filterData.run} onChange={handleFilterItemChange} title={intl.formatMessage(messages.courseRun)} data={data.runs} filterName="run" />
+          <FilterItemRadio value={filterData.language} onChange={handleFilterItemChange} title={formatMessage(messages.language)} data={data.languages} filterName="language" />
+          <FilterItemRadio value={filterData.org} onChange={handleFilterItemChange} title={formatMessage(messages.facultyCode)} data={data.orgs} filterName="org" />
+          <FilterItemRadio value={filterData.run} onChange={handleFilterItemChange} title={formatMessage(messages.courseRun)} data={data.runs} filterName="run" />
         </div>
         <div className="selected-filters">
           {
@@ -95,7 +96,7 @@ const FilterArea = ({ data, onChange, intl }) => {
             ))
           }
           {
-            Object.entries(chipBag).length > 0 && <Button variant="tertiary" className="mb-2 mb-sm-0 clear" onClick={handleClearAll}>{intl.formatMessage(messages.clearAll)}</Button>
+            Object.entries(chipBag).length > 0 && <Button variant="tertiary" className="mb-2 mb-sm-0 clear" onClick={handleClearAll}>{formatMessage(messages.clearAll)}</Button>
           }
         </div>
       </div>
@@ -103,8 +104,4 @@ const FilterArea = ({ data, onChange, intl }) => {
   );
 };
 
-FilterArea.propTypes = {
-  intl: intlShape.isRequired,
-};
-
-export default injectIntl(FilterArea);
+export default FilterArea;

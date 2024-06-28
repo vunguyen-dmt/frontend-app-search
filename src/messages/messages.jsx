@@ -2,163 +2,158 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 
 const messages = defineMessages({
   Courses: {
-    id: 'Courses',
+    id: 'searchpage.courses',
     defaultMessage: 'Courses',
     description: '',
   },
-  'results on': {
-    id: 'results on',
+  resultsOn: {
+    id: 'searchpage.results-on',
     defaultMessage: 'results on',
     description: '',
   },
   Home: {
-    id: 'Home',
+    id: 'searchpage.home',
     defaultMessage: 'Home',
     description: '',
   },
   Search: {
-    id: 'Search',
+    id: 'searchpage.search',
     defaultMessage: 'Search',
     description: '',
   },
-  'What are you looking for?': {
-    id: 'What are you looking for?',
+  whatAreYouLookingFor: {
+    id: 'searchpage.what-are-you-looking-for',
     defaultMessage: 'What are you looking for?',
     description: '',
   },
   Started: {
-    id: 'Started',
+    id: 'searchpage.started',
     defaultMessage: 'Started',
     description: '',
   },
   Ended: {
-    id: 'Ended',
+    id: 'searchpage.ended',
     defaultMessage: 'Ended',
     description: '',
   },
   Start: {
-    id: 'Start',
+    id: 'searchpage.start',
     defaultMessage: 'Start',
     description: '',
   },
-  'Search our catalog': {
-    id: 'Search our catalog',
+  searchOurCatalog: {
+    id: 'searchpage.search-our-catalog',
     defaultMessage: 'Search our catalog',
     description: '',
   },
   Course: {
-    id: 'Course',
+    id: 'searchpage.course',
     defaultMessage: 'Course',
     description: '',
   },
-  'No courses were found to match your search query': {
-    id: 'No courses were found to match your search query',
+  noCourseMatch: {
+    id: 'searchpage.no-courses-were-found-to-match-your-search-query',
     defaultMessage: 'No courses were found to match your search query',
     description: '',
   },
-  'Back to search': {
-    id: 'Back to search',
+  backToSearch: {
+    id: 'searchpage.back-to-search',
     defaultMessage: 'Back to search',
     description: '',
   },
-  'View all results': {
-    id: 'View all results',
+  ViewAllResults: {
+    id: 'searchpage.view-all-results',
     defaultMessage: 'View all results',
     description: '',
   },
-  'View course': {
-    id: 'View course',
+  viewCourse: {
+    id: 'searchpage.view-course',
     defaultMessage: 'View course',
     description: '',
   },
-  'Enroll now': {
-    id: 'Enroll now',
+  enrollNow: {
+    id: 'searchpage.enroll-now',
     defaultMessage: 'Enroll now',
     description: '',
   },
-  'Enrollment in this course is by invitation only': {
-    id: 'Enrollment in this course is by invitation only',
+  invitationOnly: {
+    id: 'searchpage.enrollment-in-this-course-is-by-invitation-only',
     defaultMessage: 'Enrollment in this course is by invitation only',
     description: '',
   },
-  'The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again': {
-    id: 'The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again',
+  notFoundMessage: {
+    id: 'searchpage.page-not-found-message',
     defaultMessage: 'The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again',
     description: '',
   },
-  'Course number': {
-    id: 'Course number',
+  courseNumber: {
+    id: 'searchpage.course-number',
     defaultMessage: 'Course number',
     description: '',
   },
-  'Instructor-Paced': {
-    id: 'Instructor-Paced',
+  instructorPaced: {
+    id: 'searchpage.instructor-paced',
     defaultMessage: 'Instructor-Paced',
     description: '',
   },
-  'Self-Paced': {
-    id: 'Self-Paced',
+  selfPaced: {
+    id: 'searchpage.self-paced',
     defaultMessage: 'Self-Paced',
     description: '',
   },
   clearAll: {
-    id: 'courses.search.clearAll',
+    id: 'searchpage.clear-all',
     defaultMessage: 'Clear all',
     description: '',
   },
   language: {
-    id: 'courses.search.language',
+    id: 'searchpage.language',
     defaultMessage: 'Language',
     description: '',
   },
   courseRun: {
-    id: 'courses.about.courseRun',
+    id: 'searchpage.course-run',
     defaultMessage: 'Course run',
     description: '',
   },
   Enroll: {
-    id: 'courses.about.enroll',
+    id: 'searchpage.enroll',
     defaultMessage: 'Enroll',
     description: '',
   },
   progressAtYourOwnPace: {
-    id: 'courses.about.progressAtYourOwnPace',
+    id: 'searchpage.progress-at-your-own-pace',
     defaultMessage: 'Progress at your own pace',
     description: '',
   },
   progressAtInstructorPace: {
-    id: 'courses.about.progressAtInstructorPace',
+    id: 'searchpage.progress-at-instructor-pace',
     defaultMessage: 'Progress at instructors pace',
     description: '',
   },
   playVideo: {
-    id: 'courses.about.playVideo',
+    id: 'searchpage.play-video',
     defaultMessage: 'Play video',
     description: '',
   },
   viewInLMS: {
-    id: 'courses.about.viewInLMS',
+    id: 'searchpage.view-in-lms',
     defaultMessage: 'View in LMS',
     description: '',
   },
   viewInStudio: {
-    id: 'courses.about.viewInStudio',
+    id: 'searchpage.view-in-studio',
     defaultMessage: 'View in Studio',
     description: '',
   },
   pageTitle: {
-    id: 'courses.search.pageTitle',
+    id: 'searchpage.page-title',
     defaultMessage: 'Courses',
     description: '',
   },
   facultyCode: {
-    id: 'courses.search.facultyCode',
+    id: 'searchpage.faculty-code',
     defaultMessage: 'Faculty code',
-    description: '',
-  },
-  runs: {
-    id: 'courses.search.courseRun',
-    defaultMessage: 'Course run',
     description: '',
   },
 });

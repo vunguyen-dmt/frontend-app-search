@@ -11,40 +11,29 @@ import ReactDOM from 'react-dom';
 import Header from '@edx/frontend-component-header';
 import Footer from '@edx/frontend-component-footer';
 import {
-  BrowserRouter, Route, Switch,
+  Route, Routes,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { useIntl } from '@edx/frontend-platform/i18n';
 import messages from './i18n';
 import './index.scss';
 import Search from './pages/search/search';
 import NotFoundPage from './pages/not-found/notFound';
 import CourseAbout from './pages/course-about/courseAbout';
-import { handleLanguageChange } from './handleLanguageChange';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
-    <BrowserRouter>
-      <AppProvider>
-        <Helmet>
-          <link rel="shortcut icon" href={getConfig().FAVICON_URL} type="image/x-icon" />
-        </Helmet>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Search} />
-          <Route exact path="/:id" component={CourseAbout} />
-          <Route path="*" component={NotFoundPage} />
-        </Switch>
-        <Footer
-          supportedLanguages={[
-            { label: 'English', value: 'en' },
-            { label: 'Tiếng Việt', value: 'vi' },
-          ]}
-          onLanguageSelected={handleLanguageChange}
-        />
-      </AppProvider>
-    </BrowserRouter>,
-
+    <AppProvider>
+      <Helmet>
+        <link rel="shortcut icon" href={getConfig().FAVICON_URL} type="image/x-icon" />
+      </Helmet>
+      <Header />
+      <Routes>
+        <Route exact path="/" element={<Search />} />
+        <Route exact path="/:id" element={<CourseAbout />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      <Footer showLanguageSelector />
+    </AppProvider>,
     document.getElementById('root'),
   );
 });

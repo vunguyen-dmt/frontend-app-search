@@ -1,13 +1,13 @@
 import React from 'react';
 import './courseAbout.scss';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { useParams } from 'react-router-dom';
 import {
   Hyperlink, Icon, Button, Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   ArrowBackIos, Event, InfoOutline, Person, ArrowForward, PlayCircle,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getCourseDetail } from '../../services/courseService';
@@ -19,7 +19,9 @@ import hutechLogo from '../../assets/images/hutech-logo.png';
 import { getCookie } from '../../data/util';
 import defaultCourseImage from '../../assets/images/default-course-image.jpg';
 
-const CourseAbout = ({ intl }) => {
+const CourseAbout = () => {
+  const { formatMessage } = useIntl();
+
   const [courseHiddenInfo, setCourseHiddenInfo] = React.useState({});
   const [showVideo, setShowVideo] = React.useState(false);
   const [courseDetailResponse, setCourseDetailResponse] = React.useState(null);
@@ -70,7 +72,7 @@ const CourseAbout = ({ intl }) => {
       }
       setCourseDetailResponse(response);
       setCourseImageUrl(response.data.media.image.small);
-      document.title = `${response.data.name} | ${intl.formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;
+      document.title = `${response.data.name} | ${formatMessage(messages.pageTitle)} | ${getConfig().SITE_NAME}`;
       getHiddenInfo(response.data.overview);
     }).catch(error => {
       setNotFound(true);
@@ -112,10 +114,6 @@ const CourseAbout = ({ intl }) => {
     window.location.href = `${getConfig().LEARNING_BASE_URL}/course/${params.id}/home`;
   };
 
-  const viewCourseInStudioClickedHandle = () => {
-    window.location.href = `${getConfig().STUDIO_BASE_URL}/settings/details/${params.id}`;
-  };
-
   const enrollButtonClickedHandle = () => {
     if (!user) {
       window.location.href = getConfig().LOGIN_URL;
@@ -153,7 +151,7 @@ const CourseAbout = ({ intl }) => {
                     size="xs"
                     src={ArrowBackIos}
                     className="fa fa-book"
-                  /><span className="nav-text">{intl.formatMessage(messages.Courses)}</span>
+                  /><span className="nav-text">{formatMessage(messages.Courses)}</span>
                 </Hyperlink>
               </div>
               <div>
@@ -166,9 +164,9 @@ const CourseAbout = ({ intl }) => {
                 <div><div className="course-name">{courseDetailResponse.data.name}</div></div>
                 <div className="short-description">{courseDetailResponse.data.short_description}</div>
                 <div className="enroll-btn-wrapper">
-                  {isEnrolled === 1 && <Button onClick={viewCourseClickedHandle} variant="danger" className="text-nowrap">{intl.formatMessage(messages['View course'])}</Button>}
-                  {isEnrolled === -1 && courseEnrollmentInfo != null && (!courseDetailResponse.data.invitation_only || canEnrollRegardless) && <Button variant="danger" className="text-nowrap" onClick={enrollButtonClickedHandle}>{intl.formatMessage(messages['Enroll now'])}</Button>}
-                  {isEnrolled === -1 && courseDetailResponse.data.invitation_only && !canEnrollRegardless && <Button disabled variant="danger">{intl.formatMessage(messages['Enrollment in this course is by invitation only'])}</Button>}
+                  {isEnrolled === 1 && <Button onClick={viewCourseClickedHandle} variant="danger" className="text-nowrap">{formatMessage(messages.viewCourse)}</Button>}
+                  {isEnrolled === -1 && courseEnrollmentInfo != null && (!courseDetailResponse.data.invitation_only || canEnrollRegardless) && <Button variant="danger" className="text-nowrap" onClick={enrollButtonClickedHandle}>{formatMessage(messages.enrollNow)}</Button>}
+                  {isEnrolled === -1 && courseDetailResponse.data.invitation_only && !canEnrollRegardless && <Button disabled variant="danger">{formatMessage(messages.invitationOnly)}</Button>}
                 </div>
                 {
                   enrollErrorMsg && enrollErrorMsg.length > 0 && <div className="alert alert-danger" role="alert">{enrollErrorMsg}</div>
@@ -179,7 +177,7 @@ const CourseAbout = ({ intl }) => {
                   !showVideo
                   && (
                     <div className="media-image-video">
-                      {courseHiddenInfo && courseHiddenInfo.video && <Button className="play-video" onClick={() => (setShowVideo(true))} iconBefore={PlayCircle} variant="inverse-primary">{intl.formatMessage(messages.playVideo)}</Button>}
+                      {courseHiddenInfo && courseHiddenInfo.video && <Button className="play-video" onClick={() => (setShowVideo(true))} iconBefore={PlayCircle} variant="inverse-primary">{formatMessage(messages.playVideo)}</Button>}
                       <img className="course-image" alt="banner" src={courseImageUrl} onError={imageErrorHandle} />
                     </div>
                   )
@@ -206,22 +204,22 @@ const CourseAbout = ({ intl }) => {
               <div>
                 <div><Icon src={InfoOutline} className="fa fa-book" /></div>
                 <div>
-                  <div className="fw-600">{intl.formatMessage(messages['Course number'])}: {courseDetailResponse.data.number}</div>
-                  <div className="s-text">{intl.formatMessage(messages.courseRun)}: {extractCourseRun()}</div>
+                  <div className="fw-600">{formatMessage(messages.courseNumber)}: {courseDetailResponse.data.number}</div>
+                  <div className="s-text">{formatMessage(messages.courseRun)}: {extractCourseRun()}</div>
                 </div>
               </div>
               <div>
                 <div><Icon src={Event} className="fa fa-book" /></div>
                 <div>
-                  <div className="fw-600">{intl.formatMessage(messages.Start)}: {toLocalDate(courseDetailResponse.data.start)}</div>
-                  <div className="s-text">{intl.formatMessage(messages.Enroll)}: {toLocalDate(courseDetailResponse.data.enrollment_start)}</div>
+                  <div className="fw-600">{formatMessage(messages.Start)}: {toLocalDate(courseDetailResponse.data.start)}</div>
+                  <div className="s-text">{formatMessage(messages.Enroll)}: {toLocalDate(courseDetailResponse.data.enrollment_start)}</div>
                 </div>
               </div>
               <div>
                 <div><Icon src={Person} className="fa fa-book" /></div>
                 <div>
-                  <div className="fw-600">{courseDetailResponse.data.pacing === 'instructor' ? intl.formatMessage(messages['Instructor-Paced']) : intl.formatMessage(messages['Self-Paced'])}</div>
-                  <div className="s-text">{courseDetailResponse.data.pacing === 'instructor' ? intl.formatMessage(messages.progressAtInstructorPace) : intl.formatMessage(messages.progressAtYourOwnPace)}</div>
+                  <div className="fw-600">{courseDetailResponse.data.pacing === 'instructor' ? formatMessage(messages.instructorPaced) : formatMessage(messages.selfPaced)}</div>
+                  <div className="s-text">{courseDetailResponse.data.pacing === 'instructor' ? formatMessage(messages.progressAtInstructorPace) : formatMessage(messages.progressAtYourOwnPace)}</div>
                 </div>
               </div>
             </div>
@@ -232,12 +230,11 @@ const CourseAbout = ({ intl }) => {
                 canEnrollRegardless
                 && (
                 <div className="view-course-in">
-                  <Button onClick={viewCourseClickedHandle} variant="outline-primary" iconAfter={ArrowForward}>{intl.formatMessage(messages.viewInLMS)}</Button>
-                  <Button onClick={viewCourseInStudioClickedHandle} variant="outline-danger" iconAfter={ArrowForward}>{intl.formatMessage(messages.viewInStudio)}</Button>
+                  <Button className="mr-3" href={`${getConfig().LEARNING_BASE_URL}/course/${params.id}/home`} variant="outline-primary" iconAfter={ArrowForward}>{formatMessage(messages.viewInLMS)}</Button>
+                  <Button href={`${getConfig().STUDIO_BASE_URL}/settings/details/${params.id}`} variant="outline-danger" iconAfter={ArrowForward}>{formatMessage(messages.viewInStudio)}</Button>
                 </div>
                 )
               }
-
               <div className="about-content" dangerouslySetInnerHTML={{ __html: courseDetailResponse.data.overview }} />
             </div>
           </div>
@@ -246,7 +243,7 @@ const CourseAbout = ({ intl }) => {
       {
             notFound && (
             <div className="text-center my-6">
-              <div>{intl.formatMessage(messages['The page you\'re looking for is unavailable or there\'s an error in the URL. Please check the URL and try again'])}</div>
+              <div>{formatMessage(messages.notFoundMessage)}</div>
             </div>
             )
         }
@@ -254,8 +251,4 @@ const CourseAbout = ({ intl }) => {
   );
 };
 
-CourseAbout.propTypes = {
-  intl: intlShape.isRequired,
-};
-
-export default injectIntl(CourseAbout);
+export default CourseAbout;
