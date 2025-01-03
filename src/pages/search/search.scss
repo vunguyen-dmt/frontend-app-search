@@ -59,7 +59,7 @@
             text-decoration: underline;
             cursor: pointer;
             &:hover {
-                color: var(--prim)!important;
+                color: var(--primary)!important;
                 background-color: #f2f0ef!important;
                 text-decoration: underline!important;
             }
@@ -91,7 +91,7 @@
                     display: block;
                     &:hover {
                         text-decoration: none;
-                        background-color: var(--prim);
+                        background-color: var(--primary);
                         color: white;
                     }
                     .badge-light {
@@ -113,7 +113,7 @@
     .page-nav {
         font-size: 0.875rem;
         a {
-            color: var(--prim);
+            color: var(--primary);
         }
         ol {
             margin-bottom: 0!important;
@@ -224,7 +224,7 @@
     }
 
     .page-item.active .page-link {
-        background-color: var(--prim);
+        background-color: var(--primary);
     }
 }
 
