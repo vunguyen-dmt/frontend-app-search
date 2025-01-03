@@ -167,7 +167,7 @@ const Search = () => {
 
   return (
     <div className="search-page-wrapper">
-      <div className="search-bg">
+      <div className="bg-primary-700">
         <div className="search-area container container-mw-lg">
           <div className="title">{formatMessage(messages.searchOurCatalog)}</div>
           <SearchField
