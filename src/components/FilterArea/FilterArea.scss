@@ -1,6 +1,21 @@
 
 .filter-area-wrapper {
     background-color: #F2F0EF;
+    .filter-item-dropdown {
+        >div {
+            box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.15), 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.15);
+            background-color: white;
+            max-height: 50%;
+            overflow-y: auto;
+            .pgn__form-checkbox {
+                padding: 8px 16px;
+                width: 100%;
+                &:hover {
+                    background-color: var(--light);
+                }
+            }
+        }
+    }
 }
 
 .filter-area {
