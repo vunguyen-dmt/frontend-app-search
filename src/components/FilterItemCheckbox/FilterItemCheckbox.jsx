@@ -47,7 +47,7 @@ export const FilterItemCheckbox = ({
               {data?.map((item) => (
                 item.vKey ? (
                   <Form.Checkbox key={item.vKey} value={item.vKey}>
-                    {item.name} ({item.count})
+                    {item.name}
                   </Form.Checkbox>
                 ) : null
               ))}

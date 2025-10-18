@@ -56,6 +56,31 @@ const Search = () => {
 
   React.useEffect(() => {
     getCourseFilters().then(response => {
+      const start = 2022;
+      const now = new Date();
+      let end = now.getFullYear() - 1;
+      const thisMonth = now.getMonth();
+      if (thisMonth > 5) end += 1
+      let runs = [];
+      for(var i = end; i >=  start; i--) {
+        runs.push({
+          vKey: `HK3-${i}-${i+1}`,
+          name: `HK3-${i}-${i+1}`,
+        });
+
+        runs.push({
+          vKey: `HK2-${i}-${i+1}`,
+          name: `HK2-${i}-${i+1}`,
+        });
+
+        runs.push({
+          vKey: `HK1-${i}-${i+1}`,
+          name: `HK1-${i}-${i+1}`,
+        });
+      }
+
+      response.data.results.runs = runs;
+
       setCourseFilters(response.data.results);
     });
   }, []);
@@ -111,7 +136,6 @@ const Search = () => {
 
   const pagingClickedHandle = (page) => {
     navigate(updateQueryStringParameter(`/${window.location.search}`, 'page', page));
-    // history.push(updateQueryStringParameter(`/${window.location.search}`, 'page', page));
     setQuery({ ...query, page });
   };
 
@@ -128,7 +152,6 @@ const Search = () => {
     let path = updateQueryStringParameter(`/${window.location.search}`, 'page', 1);
     path = updateQueryStringParameter(path, 'q', searchQuery);
     navigate(path);
-    // history.push(path);
   };
 
   const searchClearHandle = () => {
@@ -136,7 +159,6 @@ const Search = () => {
     setDropdownResponse(null);
     setQuery({ ...query, page: 1, query: '' });
     navigate(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', ''));
-    // history.push(updateQueryStringParameter(updateQueryStringParameter(`/${window.location.search}`, 'page', 1), 'q', ''));
   };
 
   const goToHomeHandle = () => getConfig().LMS_BASE_URL;
@@ -162,7 +184,6 @@ const Search = () => {
     newData.page = 1;
     setQuery(newData);
     navigate(path);
-    // history.push(path);
   };
 
   return (

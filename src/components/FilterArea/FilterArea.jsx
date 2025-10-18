@@ -85,14 +85,14 @@ const FilterArea = ({ data, onChange }) => {
       <div className="filter-area container container-mw-lg">
         <div className="d-flex filter-items">
           <FilterItemCheckbox
-            value={filterData.org} // Fixed from filterData.orgs
+            value={filterData.org}
             onChange={handleFilterItemChange}
             title={formatMessage(messages.facultyCode)}
             data={data.orgs}
             filterName="org"
           />
           <FilterItemCheckbox
-            value={filterData.run} // Fixed from filterData.runs
+            value={filterData.run}
             onChange={handleFilterItemChange}
             title={formatMessage(messages.courseRun)}
             data={data.runs}

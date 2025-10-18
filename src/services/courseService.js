@@ -1,12 +1,38 @@
 import { getAuthenticatedHttpClient, getHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform';
-import { array } from 'prop-types';
 
 export const searchCourse = (query) => {
   query.pageSize = query.limit;
 
   if(query.run && Array.isArray(query.run)) {
-    query.run = query.run.join(',')
+    /* the reason for this is because the univerisity used various forms of RUN,
+    in the view we grouped it to a form like HK1-2022-2023, but in the params we have to use
+    all possible forms.
+    */
+    let genRuns = [];
+    query.run.forEach((i) => {
+      const split = i.split('-');
+      if (split.length === 3 && split[0].startsWith('HK')) {
+        genRuns = genRuns.concat([
+          `${split[0]}-${split[1]}-${split[2]}`,
+          `${split[0]}A-${split[1]}-${split[2]}`,
+          `${split[0]}B-${split[1]}-${split[2]}`,
+
+          `${split[1]}-${split[2]}-${split[0]}`,
+          `${split[1]}-${split[2]}-${split[0]}A`,
+          `${split[1]}-${split[2]}-${split[0]}B`,
+
+          `${split[0]}_${split[1]}_${split[2]}`,
+          `${split[0]}A_${split[1]}_${split[2]}`,
+          `${split[0]}B_${split[1]}_${split[2]}`,
+
+          `${split[1]}_${split[2]}_${split[0]}`,
+          `${split[1]}_${split[2]}_${split[0]}A`,
+          `${split[1]}_${split[2]}_${split[0]}B`
+        ]);
+      }
+    })
+    query.run = genRuns.join(',')
   }
 
   if(query.language && Array.isArray(query.language)) {
